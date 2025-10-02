@@ -22,6 +22,7 @@ typedef struct {
     float ecg[8];          // ECG_CHANNELS * 4 bytes = 32 bytes
     imu_sample_t imu1;       // 12 bytes
     imu_sample_t imu2;       // 12 bytes
+    float temperature;  // 2 bytes
 } pkt_sample_t;            // Total: 60 bytes
 
 

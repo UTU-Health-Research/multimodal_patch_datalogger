@@ -57,3 +57,10 @@
 #define I2C_TIMEOUT_MS       20  // 20ms timeout for I2C operations
 #define I2C_FREQ_HZ          400000 // 400KHz I2C clock frequency
 
+
+// Temperature sensor (MAX30205) Configuration
+#define MAX30205_ADDR               0x48    // I2C address (may vary from 0x48-0x4F depending on A0-A2 pins)
+#define MAX30205_REG_TEMP           0x00    // Temperature register
+#define MAX30205_REG_CONFIG         0x01    // Configuration register
+#define MAX30205_REG_THYST          0x02    // Hysteresis register
+#define MAX30205_REG_TOS            0x03    // Over-temperature shutdown threshold register
