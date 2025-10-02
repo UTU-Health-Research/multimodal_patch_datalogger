@@ -9,6 +9,7 @@
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 #include "imu.h"
+#include "max30205.h" 
 
 // ===== Pins from config.h =====
 // ECG_MISO, ECG_MOSI, ECG_SCLK, ECG_CS, DRDY_PIN, START_PIN, PWDN_PIN, RESET_PIN
@@ -70,6 +71,15 @@ static void parse_ecg_frame_to_sample(const uint8_t *frame, pkt_sample_t *out) {
         int32_t raw = sext24(frame[off], frame[off + 1], frame[off + 2]);
         out->ecg[ch] = (float)raw * (BASE_FACTOR / CHANNEL_GAIN[ch]);
     }
+
+    // Get latest IMU data
+    imu_sample_t imu1_data, imu2_data;
+    imu_get_latest_data(&imu1_data, &imu2_data);
+    memcpy(&out->imu1, &imu1_data, sizeof(imu_sample_t));
+    memcpy(&out->imu2, &imu2_data, sizeof(imu_sample_t));
+    
+    // Get latest temperature data
+    out->temperature = temp_get_latest();
 }
 
 // Send a single-byte command (needs manually driven CS before and after function call)
@@ -220,14 +230,16 @@ static void ads_task(void *arg) {
         }
 
         pkt_sample_t s;
-        imu_sample_t imu1_data, imu2_data;
+        // imu_sample_t imu1_data, imu2_data;
         //esp_log_buffer_hex("ECG rx buffer", rx, 8*sizeof(rx)); //printing data from ADS1298R
         parse_ecg_frame_to_sample(rx, &s); 
 
-         // Get latest IMU data
-        imu_get_latest_data(&imu1_data, &imu2_data);
-        memcpy(&s.imu1, &imu1_data, sizeof(imu_sample_t));
-        memcpy(&s.imu2, &imu2_data, sizeof(imu_sample_t));
+        //  // Get latest IMU data
+        // imu_get_latest_data(&imu1_data, &imu2_data);
+        // memcpy(&s.imu1, &imu1_data, sizeof(imu_sample_t));
+        // memcpy(&s.imu2, &imu2_data, sizeof(imu_sample_t));
+        // // Get latest temperature data
+        // out->temperature = temp_get_latest();
 
         //esp_log_buffer_hex("ECG sample", &s.ch, 8*sizeof(&s.ch)); //printing data from sample
         (void)xQueueSend(s_outQ, &s, 0);

@@ -59,6 +59,9 @@ static void pipeline_task(void *arg) {
             out.imu2.gyro_x = (int16_t)(0.5f * (accum.imu2.gyro_x + s.imu2.gyro_x));
             out.imu2.gyro_y = (int16_t)(0.5f * (accum.imu2.gyro_y + s.imu2.gyro_y));
             out.imu2.gyro_z = (int16_t)(0.5f * (accum.imu2.gyro_z + s.imu2.gyro_z));
+
+            // Average temperature data
+            out.temperature = 0.5f * (accum.temperature + s.temperature);
             
             have_pending = false;
 

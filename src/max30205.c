@@ -4,12 +4,33 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 #include "config.h"
+#include "max30205.h"
+#include "imu.h"
 
 static const char *TAG = "TEMP";
 
 // Latest temperature data - protected by mutex
 static SemaphoreHandle_t s_temp_mutex = NULL;
 static volatile float s_latest_temperature = 0.0f;
+
+
+// Add this function to max30205.c
+static esp_err_t i2c_write_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, 
+                                               uint8_t reg, const uint8_t *data, size_t len) {
+    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+    
+    i2c_master_start(cmd);
+    i2c_master_write_byte(cmd, (addr << 1) | I2C_MASTER_WRITE, true);
+    i2c_master_write_byte(cmd, reg, true);
+    i2c_master_write(cmd, (uint8_t*)data, len, true);
+    i2c_master_stop(cmd);
+    
+    esp_err_t ret = i2c_master_cmd_begin(i2c_port, cmd, pdMS_TO_TICKS(I2C_TIMEOUT_MS));
+    i2c_cmd_link_delete(cmd);
+    
+    return ret;
+}
+
 
 // Read temperature from MAX30205
 static esp_err_t max30205_read_temp(float *temp) {
@@ -47,8 +68,9 @@ static void temp_task(void *pvParameters) {
     
     // Try to initialize temperature sensor
     bool init_success = false;
+    uint8_t config_value = 0x00; // Continuous conversion mode
     esp_err_t ret = i2c_write_register_with_timeout(IMU_I2C_PORT, MAX30205_ADDR, 
-                                              MAX30205_REG_CONFIG, 0x00); // Continuous conversion mode
+                                          MAX30205_REG_CONFIG, &config_value, 1);
     init_success = (ret == ESP_OK);
     
     ESP_LOGI(TAG, "Temperature sensor init: %s", init_success ? "Success" : "Failed");

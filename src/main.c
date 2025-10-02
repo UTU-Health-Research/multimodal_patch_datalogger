@@ -8,6 +8,7 @@
 #include "data_types.h"
 #include "ads1298r.h"
 #include "imu.h"
+#include "max30205.h"
 #include "pipeline.h"
 #include "sd_logger.h"
 #include "esp_random.h"
@@ -23,6 +24,7 @@ void app_main(void) {
     if (!sensor_q) { ESP_LOGE(TAG, "sensor_q create failed"); return; }
 
     imu_start();
+    temp_start();  // Initialize temperature sensor
 
     // Start ADS producer (pushes into sensor_q)
     ads1298r_start(sensor_q);
@@ -34,9 +36,5 @@ void app_main(void) {
     pipeline_start(sensor_q, sd_q);
 
     ESP_LOGI(TAG, "System running: 500 Hz in → 250 Hz out, batched to SD");
-
-        // while (1) {
-        //     vTaskDelay(pdMS_TO_TICKS(1000));
-        // }
 
 }
