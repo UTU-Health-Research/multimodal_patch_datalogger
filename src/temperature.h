@@ -13,4 +13,4 @@
 void temp_start(void);
 
 // Get the latest temperature data - thread-safe access function
-void temp_get_latest_data(float *temp_data);
+void temp_get_latest(float *temperature);
