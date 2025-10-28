@@ -9,6 +9,7 @@
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
 #include "imu.h"
+#include "temperature.h"
 
 // ===== Pins from config.h =====
 // ECG_MISO, ECG_MOSI, ECG_SCLK, ECG_CS, DRDY_PIN, START_PIN, PWDN_PIN, RESET_PIN
@@ -221,6 +222,8 @@ static void ads_task(void *arg) {
 
         pkt_sample_t s;
         imu_sample_t imu1_data, imu2_data;
+        float temp_data; 
+
         //esp_log_buffer_hex("ECG rx buffer", rx, 8*sizeof(rx)); //printing data from ADS1298R
         parse_ecg_frame_to_sample(rx, &s); 
 
@@ -228,6 +231,10 @@ static void ads_task(void *arg) {
         imu_get_latest_data(&imu1_data, &imu2_data);
         memcpy(&s.imu1, &imu1_data, sizeof(imu_sample_t));
         memcpy(&s.imu2, &imu2_data, sizeof(imu_sample_t));
+
+        // Get latest temperature data
+        temp_get_latest(&temp_data);
+        memcpy(&s.temp, &temp_data, sizeof(float));
 
         //esp_log_buffer_hex("ECG sample", &s.ch, 8*sizeof(&s.ch)); //printing data from sample
         (void)xQueueSend(s_outQ, &s, 0);
