@@ -49,11 +49,24 @@
 
 // IMU Configuration
 #define IMU_I2C_PORT         I2C_NUM_0
-#define IMU_SDA_PIN          4  // Adjust according to your wiring
-#define IMU_SCL_PIN          5  // Adjust according to your wiring
+#define IMU_SDA_PIN          4  // Adjust according to circuit wiring
+#define IMU_SCL_PIN          5  // Adjust according to circuit wiring
 #define IMU1_ADDR            0x6A // Default LSM6DSOX address
 #define IMU2_ADDR            0x6B // Alternative address (if SDO/SA0 pin is high)
 #define IMU_SAMPLE_PERIOD_MS 10  // 100Hz sampling
 #define I2C_TIMEOUT_MS       20  // 20ms timeout for I2C operations
 #define I2C_FREQ_HZ          400000 // 400KHz I2C clock frequency
 
+// Temperature sensor configuration
+#define TEMP_I2C_PORT          I2C_NUM_0
+#define TEMP_SDA_PIN           4
+#define TEMP_SCL_PIN           5
+#define TEMP_I2C_FREQ_HZ       400000
+
+#define MAX30205_ADDR          0x48 // MAX30205 sensor address (default is 0x48, may vary based on address pins)
+#define MAX30205_REG_TEMP      0x00
+#define MAX30205_REG_CONFIG    0x01
+#define MAX30205_REG_THYST     0x02
+#define MAX30205_REG_TOS       0x03
+#define TEMP_SAMPLE_PERIOD_MS  10 // 100Hz sampling
+#define TEMP_I2C_TIMEOUT_MS    20 // 20ms timeout for I2C operations
