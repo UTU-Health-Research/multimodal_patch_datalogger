@@ -22,7 +22,8 @@ void app_main(void) {
     QueueHandle_t sensor_q = xQueueCreate(SENSOR_QUEUE_LEN, sizeof(pkt_sample_t));
     if (!sensor_q) { ESP_LOGE(TAG, "sensor_q create failed"); return; }
 
-    imu_start();
+    imu_start(); // Start IMU task
+    temp_start(); // Start temperature sensor task
 
     // Start ADS producer (pushes into sensor_q)
     ads1298r_start(sensor_q);
