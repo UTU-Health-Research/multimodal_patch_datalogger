@@ -10,7 +10,7 @@ static volatile imu_sample_t s_imu1_latest = {0};
 static volatile imu_sample_t s_imu2_latest = {0};
 
 // Low-level I2C read with timeout
-static esp_err_t i2c_read_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, uint8_t *data, size_t len) {
+esp_err_t i2c_read_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, uint8_t *data, size_t len) {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     
     // Write register address
@@ -34,7 +34,7 @@ static esp_err_t i2c_read_register_with_timeout(i2c_port_t i2c_port, uint8_t add
 }
 
 // Low-level I2C write with timeout
-static esp_err_t i2c_write_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, const uint8_t *data, size_t len) {
+esp_err_t i2c_write_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, const uint8_t *data, size_t len) {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     
     i2c_master_start(cmd);
