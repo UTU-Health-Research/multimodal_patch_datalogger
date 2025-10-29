@@ -23,7 +23,7 @@ typedef struct {
     imu_sample_t imu1;       // 12 bytes
     imu_sample_t imu2;       // 12 bytes
     float temp;              // temperature reading 4 bytes
-} pkt_sample_t;            // Total: 60 bytes
+} pkt_sample_t;            // Total: 64 bytes
 
 
 // Batch descriptor passed to SD writer
