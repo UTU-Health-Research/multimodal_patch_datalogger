@@ -8,6 +8,7 @@
 #include "data_types.h"
 #include "ads1298r.h"
 #include "imu.h"
+#include "temperature.h"
 #include "pipeline.h"
 #include "sd_logger.h"
 #include "esp_random.h"
