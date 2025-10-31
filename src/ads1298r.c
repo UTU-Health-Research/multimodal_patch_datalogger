@@ -62,7 +62,7 @@ static inline int32_t sext24(uint8_t b0, uint8_t b1, uint8_t b2) {
 
 // Gains/reference setup
 static const float CHANNEL_GAIN[ECG_CHANNELS] = {6.0, 4.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0};
-static const float BASE_FACTOR = 2400000.0f / 8388607.0f;
+static const float BASE_FACTOR = 2400.0f / 8388607.0f; // 2.4V ref in mV / (2^23 -1)
 
 static void parse_ecg_frame_to_sample(const uint8_t *frame, pkt_sample_t *out) {
     out->timestamp = (uint32_t)(esp_timer_get_time() / 1000);
