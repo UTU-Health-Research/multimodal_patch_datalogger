@@ -8,22 +8,22 @@
 
 // LSM6DSOX data structure
 typedef struct {
-    int16_t accel_x;
-    int16_t accel_y;
-    int16_t accel_z;
-    int16_t gyro_x;
-    int16_t gyro_y;
-    int16_t gyro_z;
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float gyro_x;
+    float gyro_y;
+    float gyro_z;
 } imu_sample_t;
 
 // Combined data structure - single integrated packet
 typedef struct {
     int32_t timestamp;     // 4 bytes
     float ecg[8];          // ECG_CHANNELS * 4 bytes = 32 bytes
-    imu_sample_t imu1;       // 12 bytes
-    imu_sample_t imu2;       // 12 bytes
+    imu_sample_t imu1;       // 24 bytes
+    imu_sample_t imu2;       // 24 bytes
     float temp;              // temperature reading 4 bytes
-} pkt_sample_t;            // Total: 64 bytes
+} pkt_sample_t;            // Total: 88 bytes
 
 
 // Batch descriptor passed to SD writer
