@@ -56,6 +56,9 @@
 #define IMU_SAMPLE_PERIOD_MS 10  // 100Hz sampling
 #define I2C_TIMEOUT_MS       20  // 20ms timeout for I2C operations
 #define I2C_FREQ_HZ          400000 // 400KHz I2C clock frequency
+// Sensitivity values for specific configurations
+#define SENSITIVITY_ACCELEROMETER  0.061f   // mg/LSB for ±2G range
+#define SENSITIVITY_GYROSCOPE      4.375f   // mdps/LSB for ±125DPS range
 
 // Temperature sensor configuration
 #define TEMP_I2C_PORT          I2C_NUM_0
