@@ -1,4 +1,5 @@
 #include "imu.h"
+#include "math.h"
 
 static const char *TAG = "IMU";
 
@@ -108,12 +109,12 @@ static esp_err_t lsm6dsox_read_data_with_timeout(i2c_port_t i2c_port, uint8_t ad
     //esp_log_buffer_hex("IMU sample", &buffer, sizeof(buffer)); //printing data from sample
 
     // Parse data from buffer
-    data->gyro_x = (int16_t)((buffer[1] << 8) | buffer[0]);
-    data->gyro_y = (int16_t)((buffer[3] << 8) | buffer[2]);
-    data->gyro_z = (int16_t)((buffer[5] << 8) | buffer[4]);
-    data->accel_x = (int16_t)((buffer[7] << 8) | buffer[6]);
-    data->accel_y = (int16_t)((buffer[9] << 8) | buffer[8]);
-    data->accel_z = (int16_t)((buffer[11] << 8) | buffer[10]);
+    data->gyro_x = (float)((buffer[1] << 8) | buffer[0]) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->gyro_y = (float)((buffer[3] << 8) | buffer[2]) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->gyro_z = (float)((buffer[5] << 8) | buffer[4]) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->accel_x = (float)((buffer[7] << 8) | buffer[6]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
+    data->accel_y = (float)((buffer[9] << 8) | buffer[8]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
+    data->accel_z = (float)((buffer[11] << 8) | buffer[10]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
 
     return ESP_OK;
 }
