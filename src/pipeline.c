@@ -45,21 +45,21 @@ static void pipeline_task(void *arg) {
             }
 
             // Average IMU1 data
-            out.imu1.accel_x = (int16_t)(0.5f * (accum.imu1.accel_x + s.imu1.accel_x));
-            out.imu1.accel_y = (int16_t)(0.5f * (accum.imu1.accel_y + s.imu1.accel_y));
-            out.imu1.accel_z = (int16_t)(0.5f * (accum.imu1.accel_z + s.imu1.accel_z));
-            out.imu1.gyro_x = (int16_t)(0.5f * (accum.imu1.gyro_x + s.imu1.gyro_x));
-            out.imu1.gyro_y = (int16_t)(0.5f * (accum.imu1.gyro_y + s.imu1.gyro_y));
-            out.imu1.gyro_z = (int16_t)(0.5f * (accum.imu1.gyro_z + s.imu1.gyro_z));
-            
+            out.imu1.accel_x = 0.5f * (accum.imu1.accel_x + s.imu1.accel_x);
+            out.imu1.accel_y = 0.5f * (accum.imu1.accel_y + s.imu1.accel_y);
+            out.imu1.accel_z = 0.5f * (accum.imu1.accel_z + s.imu1.accel_z);
+            out.imu1.gyro_x = 0.5f * (accum.imu1.gyro_x + s.imu1.gyro_x);
+            out.imu1.gyro_y = 0.5f * (accum.imu1.gyro_y + s.imu1.gyro_y);
+            out.imu1.gyro_z = 0.5f * (accum.imu1.gyro_z + s.imu1.gyro_z);
+
             // Average IMU2 data
-            out.imu2.accel_x = (int16_t)(0.5f * (accum.imu2.accel_x + s.imu2.accel_x));
-            out.imu2.accel_y = (int16_t)(0.5f * (accum.imu2.accel_y + s.imu2.accel_y));
-            out.imu2.accel_z = (int16_t)(0.5f * (accum.imu2.accel_z + s.imu2.accel_z));
-            out.imu2.gyro_x = (int16_t)(0.5f * (accum.imu2.gyro_x + s.imu2.gyro_x));
-            out.imu2.gyro_y = (int16_t)(0.5f * (accum.imu2.gyro_y + s.imu2.gyro_y));
-            out.imu2.gyro_z = (int16_t)(0.5f * (accum.imu2.gyro_z + s.imu2.gyro_z));
-            
+            out.imu2.accel_x = 0.5f * (accum.imu2.accel_x + s.imu2.accel_x);
+            out.imu2.accel_y = 0.5f * (accum.imu2.accel_y + s.imu2.accel_y);
+            out.imu2.accel_z = 0.5f * (accum.imu2.accel_z + s.imu2.accel_z);
+            out.imu2.gyro_x = 0.5f * (accum.imu2.gyro_x + s.imu2.gyro_x);
+            out.imu2.gyro_y = 0.5f * (accum.imu2.gyro_y + s.imu2.gyro_y);
+            out.imu2.gyro_z = 0.5f * (accum.imu2.gyro_z + s.imu2.gyro_z);
+
             // Average temperature data
             out.temp = 0.5f * (accum.temp + s.temp);
 
