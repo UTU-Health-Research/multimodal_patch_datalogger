@@ -8,8 +8,7 @@
 #include "esp_heap_caps.h"
 #include "driver/spi_master.h"
 #include "driver/gpio.h"
-#include "imu.h"
-#include "temperature.h"
+#include "i2c_sensors.h"
 
 // ===== Pins from config.h =====
 // ECG_MISO, ECG_MOSI, ECG_SCLK, ECG_CS, DRDY_PIN, START_PIN, PWDN_PIN, RESET_PIN
@@ -61,7 +60,7 @@ static inline int32_t sext24(uint8_t b0, uint8_t b1, uint8_t b2) {
 }
 
 // Gains/reference setup
-static const float CHANNEL_GAIN[ECG_CHANNELS] = {6.0, 4.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0};
+static const float CHANNEL_GAIN[ECG_CHANNELS] = {4.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0};
 static const float BASE_FACTOR = 2400.0f / 8388607.0f; // 2.4V ref in mV / (2^23 -1)
 
 static void parse_ecg_frame_to_sample(const uint8_t *frame, pkt_sample_t *out) {
@@ -138,18 +137,18 @@ static void init_ads1298r_registers(void) {
     const uint8_t batch1[] = {
         0x86, // CONFIG1: 500 SPS
         0x02, // CONFIG2
-        0xCC, // CONFIG3
+        0xCD, // CONFIG3
         0x00, // LOFF
-        0x10, // CH1SET
-        0x10, // CH2SET
-        0x00, // CH3SET
+        0x10, // CH1SET 0100 0000 used to be 0x10 to be turned on for resp, now turned off with 0x91
+        0x00, // CH2SET 0x50 for high gain lead 1
+        0x00, // CH3SET 0x50 for high gain lead 2
         0x00, // CH4SET
         0x00, // CH5SET
         0x00, // CH6SET
         0x00, // CH7SET
         0x00, // CH8SET
-        0x00, // RLD_SENSP
-        0x00, // RLD_SENSN
+        0x06, // RLD_SENSP RLDP derived from IN2P LA and IN3P LL
+        0x02, // RLD_SENSN RLDN derived from IN2N RA 
         0x00, // LOFF_SENSP
         0x00, // LOFF_SENSN
     };
@@ -158,8 +157,8 @@ static void init_ads1298r_registers(void) {
     const uint8_t batch2[] = {
         0x0F, // GPIO
         0x00, // PACE
-        0xF2, // RESP
-        0x20, // CONFIG4
+        0xF2, // RESP //0xF2 for respiration measurement turned ON. 0x20 for turned off
+        0x20, // CONFIG4 0x20 for 32kHz resp modulation or 0x00 for 64kHz modulation
         0x0B, // WCT1
         0xD4, // WCT2
     };
@@ -228,12 +227,9 @@ static void ads_task(void *arg) {
         parse_ecg_frame_to_sample(rx, &s); 
 
          // Get latest IMU data
-        imu_get_latest_data(&imu1_data, &imu2_data);
+        sensors_get_latest_data(&imu1_data, &imu2_data, &temp_data);
         memcpy(&s.imu1, &imu1_data, sizeof(imu_sample_t));
         memcpy(&s.imu2, &imu2_data, sizeof(imu_sample_t));
-
-        // Get latest temperature data
-        temp_get_latest(&temp_data);
         memcpy(&s.temp, &temp_data, sizeof(float));
 
         //esp_log_buffer_hex("ECG sample", &s.ch, 8*sizeof(&s.ch)); //printing data from sample
@@ -246,7 +242,8 @@ void ads1298r_start(QueueHandle_t out_queue) {
 
         // GPIO setup
     gpio_set_direction(GREEN_LED_ANODE, GPIO_MODE_OUTPUT);
-    gpio_set_level(GREEN_LED_ANODE, 1); // turn on green LED
+    gpio_set_direction(RED_LED_ANODE, GPIO_MODE_OUTPUT);
+    //gpio_set_level(GREEN_LED_ANODE, 1); // turn on green LED
     gpio_set_direction(ECG_CS, GPIO_MODE_OUTPUT);
     gpio_set_level(ECG_CS, 1);
     gpio_set_direction(DRDY_PIN, GPIO_MODE_INPUT);
