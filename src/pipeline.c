@@ -5,6 +5,8 @@
 #include "data_types.h"
 #include "esp_heap_caps.h"
 #include "esp_log.h"
+#include "driver/uart.h"
+#include "serial_stream.h"
 
 static const char *TAG = "pipeline";
 
@@ -28,6 +30,8 @@ static void pipeline_task(void *arg) {
 
     for (;;) {
         pkt_sample_t s;
+        pkt_sample_t out;
+
         if (!xQueueReceive(s_inQ, &s, portMAX_DELAY)) continue;
 
         // Decimate from 500 Hz to 250 Hz
@@ -38,7 +42,7 @@ static void pipeline_task(void *arg) {
             continue;
         } else {
             // average accum and s
-            pkt_sample_t out = s;
+            out = s;
             out.timestamp = s.timestamp; // last timestamp
             for (int i = 0; i < ECG_CHANNELS; ++i) {
                 out.ecg[i] = 0.5f * (accum.ecg[i] + s.ecg[i]);
@@ -103,6 +107,7 @@ static void pipeline_task(void *arg) {
             batch_buf_t bb = { .data = (uint8_t*)txt, .len = tfill };
             // recycle bin for next batch (keep the same binary workspace)
 #endif
+
             // Print first few bytes of the batch buffer for inspection
             //ESP_LOG_BUFFER_HEX(TAG, bb.data, bb.len < 32 ? bb.len : 32);
             // Send to SD writer
@@ -112,11 +117,40 @@ static void pipeline_task(void *arg) {
             bin = (uint8_t *)heap_caps_malloc(SAMPLES_PER_BATCH * sample_sz, MALLOC_CAP_8BIT);
             filled = 0;
         }
+    static uint8_t sample_counter = 0;
+
+/*
+        SEND SELECTED DATA OVER SERIAL PORT FOR TRIAGE PURPOSES
+*/
+
+    // After processing each sample at 250Hz
+    sample_counter++;
+    if (sample_counter >= 3) {  // Every other sample (125Hz)
+        // Create a buffer to hold the specific values
+    float data_to_send[9];
+
+    // Fill the buffer with the values you want to send
+    data_to_send[0] = out.ecg[1];
+    data_to_send[1] = out.ecg[2];
+    data_to_send[2] = out.ecg[3];
+    data_to_send[3] = out.ecg[7];
+    data_to_send[4] = out.imu1.accel_z;
+    data_to_send[5] = out.imu1.gyro_y;  
+    data_to_send[6] = out.imu2.accel_z;
+    data_to_send[7] = out.imu2.gyro_y;  
+    data_to_send[8] = out.temp;
+
+// Log the buffer as hexadecimal values
+ESP_LOG_BUFFER_HEX("DATA", data_to_send, sizeof(data_to_send));
+        //serial_streamer_send_data(&out, sizeof(out));
+        vTaskDelay(1);
+        sample_counter = 0;
+    }    
     }
 }
 
 void pipeline_start(QueueHandle_t in_queue, QueueHandle_t out_queue) {
     s_inQ = in_queue;
     s_outQ = out_queue;
-    xTaskCreatePinnedToCore(pipeline_task, "pipeline", 4096, NULL, configMAX_PRIORITIES - 3, NULL, 1);
+    xTaskCreatePinnedToCore(pipeline_task, "pipeline", 4096, NULL, configMAX_PRIORITIES - 6, NULL, 1);
 }
