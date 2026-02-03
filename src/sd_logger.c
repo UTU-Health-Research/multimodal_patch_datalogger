@@ -36,7 +36,7 @@ static void sd_writer_task(void *arg) {
             //ESP_LOG_BUFFER_HEX(TAG, bb.data, bb.len < 32 ? bb.len : 32);
             // if (!s_file) s_file = fopen("/sdcard/ecg_1.bin", "wb");
             size_t wr = fwrite(bb.data, 1, bb.len, s_file);
-            taskYIELD();
+
             if (wr != bb.len) {
                 ESP_LOGE(TAG, "fwrite short: %u/%u", (unsigned)wr, (unsigned)bb.len);
             }
@@ -46,11 +46,15 @@ static void sd_writer_task(void *arg) {
 
         int64_t now = esp_timer_get_time();
         if (now - last_sync >= SYNC_INTERVAL_US) {
+
             fflush(s_file);
+            
             fclose(s_file);
+
         ESP_LOGI(TAG, "SD sync at %lld us", now);
             last_sync = now;
             s_file = fopen(s_path,"ab");
+            vTaskDelay(1);
         }
     }
 }
@@ -86,7 +90,11 @@ static esp_err_t mount_sdcard(void) {
         .quadhd_io_num = -1,
         .max_transfer_sz = 4092,
     };
-    ESP_ERROR_CHECK(spi_bus_initialize(SPI2_HOST, &bus_cfg, SDSPI_DEFAULT_DMA));
+    esp_err_t ret = spi_bus_initialize(SPI2_HOST, &bus_cfg, SDSPI_DEFAULT_DMA);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to initialize SPI bus: %s", esp_err_to_name(ret));
+        return ret;
+    }
 
     sdspi_device_config_t slot_cfg = SDSPI_DEVICE_CONFIG_DEFAULT();
     slot_cfg.gpio_cs = SD_CS;
@@ -99,7 +107,14 @@ static esp_err_t mount_sdcard(void) {
     };
 
     sdmmc_card_t *card;
-    ESP_ERROR_CHECK(esp_vfs_fat_sdspi_mount(SD_MOUNT_POINT, &host, &slot_cfg, &mount_cfg, &card));
+    ret = esp_vfs_fat_sdspi_mount(SD_MOUNT_POINT, &host, &slot_cfg, &mount_cfg, &card);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to mount SD card: %s", esp_err_to_name(ret));
+        // Try to clean up the SPI bus
+        spi_bus_free(SPI2_HOST);
+        return ret;
+    }
+    
     sdmmc_card_print_info(stdout, card);
     return ESP_OK;
 #endif
@@ -123,7 +138,23 @@ static int get_next_file_index() {
 }
 
 QueueHandle_t sd_logger_start() {
-    if (mount_sdcard() != ESP_OK) return NULL;
+
+        // Try to mount SD card
+    esp_err_t err = mount_sdcard();
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "SD card mount failed: %s. System halted.", esp_err_to_name(err));
+        
+        // Turn on the error LED
+        gpio_set_level(RED_LED_ANODE, 1);
+        
+        // Enter an infinite loop to prevent restart
+        while (1) {
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+        
+        // This return will never be reached
+        return NULL;
+    }
 
 // FILE *test_file = fopen("/sdcard/testfile1.txt", "w");
 // if (test_file) {
