@@ -1,14 +1,15 @@
-#include "imu.h"
+#include "i2c_sensors.h"
 #include "math.h"
 
 static const char *TAG = "IMU";
 
 // Mutex to protect IMU buffer access
-static SemaphoreHandle_t s_imu_mutex = NULL;
+static SemaphoreHandle_t s_sensors_mutex = NULL;
 
 // Latest IMU data - initialized to zeros
 static volatile imu_sample_t s_imu1_latest = {0};
 static volatile imu_sample_t s_imu2_latest = {0};
+static volatile float s_temp_latest = 0.0f;
 
 // Low-level I2C read with timeout
 esp_err_t i2c_read_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, uint8_t *data, size_t len) {
@@ -109,41 +110,94 @@ static esp_err_t lsm6dsox_read_data_with_timeout(i2c_port_t i2c_port, uint8_t ad
     //esp_log_buffer_hex("IMU sample", &buffer, sizeof(buffer)); //printing data from sample
 
     // Parse data from buffer
-    data->gyro_x = (float)((buffer[1] << 8) | buffer[0]) * SENSITIVITY_GYROSCOPE / 1000.0f;
-    data->gyro_y = (float)((buffer[3] << 8) | buffer[2]) * SENSITIVITY_GYROSCOPE / 1000.0f;
-    data->gyro_z = (float)((buffer[5] << 8) | buffer[4]) * SENSITIVITY_GYROSCOPE / 1000.0f;
-    data->accel_x = (float)((buffer[7] << 8) | buffer[6]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
-    data->accel_y = (float)((buffer[9] << 8) | buffer[8]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
-    data->accel_z = (float)((buffer[11] << 8) | buffer[10]) * SENSITIVITY_ACCELEROMETER / 1000.0f;
+    data->gyro_x = (float)((int16_t)((buffer[1] << 8) | buffer[0])) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->gyro_y = (float)((int16_t)((buffer[3] << 8) | buffer[2])) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->gyro_z = (float)((int16_t)((buffer[5] << 8) | buffer[4])) * SENSITIVITY_GYROSCOPE / 1000.0f;
+    data->accel_x = (float)((int16_t)((buffer[7] << 8) | buffer[6])) * SENSITIVITY_ACCELEROMETER / 1000.0f;
+    data->accel_y = (float)((int16_t)((buffer[9] << 8) | buffer[8])) * SENSITIVITY_ACCELEROMETER / 1000.0f;
+    data->accel_z = (float)((int16_t)((buffer[11] << 8) | buffer[10])) * SENSITIVITY_ACCELEROMETER / 1000.0f;
 
     return ESP_OK;
 }
 
-// IMU task - runs on Core 0
-static void imu_task(void *pvParameters) {
-    imu_sample_t imu1_data = {0}, imu2_data = {0};
-    TickType_t last_wake_time = xTaskGetTickCount();
+// Initialize MAX30205 temperature sensor
+esp_err_t max30205_init(void) {
+    // Configure the sensor - set to default mode (comparator mode, active low, one-shot)
+    uint8_t config = 0x00;
+    esp_err_t ret = i2c_write_register_with_timeout(I2C_PORT, MAX30205_ADDR, MAX30205_REG_CONFIG, &config, 1);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to configure MAX30205: %d", ret);
+        return ret;
+    }
     
-    // Try to initialize IMU sensors
-    bool init_success1 = (lsm6dsox_init_with_timeout(IMU_I2C_PORT, IMU1_ADDR) == ESP_OK);
-    bool init_success2 = (lsm6dsox_init_with_timeout(IMU_I2C_PORT, IMU2_ADDR) == ESP_OK);
+    return ESP_OK;
+}
+
+// Read temperature from MAX30205
+esp_err_t max30205_read_temp(float *temperature) {
+    if (temperature == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    
+    uint8_t data[2];
+    esp_err_t ret = i2c_read_register_with_timeout(I2C_PORT, MAX30205_ADDR, MAX30205_REG_TEMP, data, 2);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+    
+    // Convert the 16-bit temperature value to Celsius
+    // MAX30205 reports temperature as a 16-bit value with the LSB = 0.00390625°C
+    int16_t raw_temp = (data[0] << 8) | data[1];
+    *temperature = raw_temp * 0.00390625f;
+    
+    return ESP_OK;
+}
+
+// IMU task - runs on Core 0
+static void sensors_task(void *pvParameters) {
+    imu_sample_t imu1_data = {0}, imu2_data = {0};
+    float temp_data = 0.0f;
+
+    TickType_t last_wake_time = xTaskGetTickCount();
+    TickType_t last_temp_read_time = xTaskGetTickCount();
+
+    bool temp_updated = false;
+    
+    // Try to initialize I2C sensors
+    bool init_success1 = (lsm6dsox_init_with_timeout(I2C_PORT, IMU1_ADDR) == ESP_OK);
+    bool init_success2 = (lsm6dsox_init_with_timeout(I2C_PORT, IMU2_ADDR) == ESP_OK);
+    bool temp_init_success = (max30205_init() == ESP_OK);
+
     
     ESP_LOGI(TAG, "IMU1 init: %s", init_success1 ? "Success" : "Failed");
     ESP_LOGI(TAG, "IMU2 init: %s", init_success2 ? "Success" : "Failed");
+    ESP_LOGI(TAG, "Temperature sensor init: %s", temp_init_success ? "Success" : "Failed");
     
     // Main task loop
     while(1) {
         // Try to read from IMU1 - if it fails, keep using last values
-        esp_err_t ret1 = lsm6dsox_read_data_with_timeout(IMU_I2C_PORT, IMU1_ADDR, &imu1_data);
+        esp_err_t ret1 = lsm6dsox_read_data_with_timeout(I2C_PORT, IMU1_ADDR, &imu1_data);
         if (ret1 != ESP_OK && ret1 != ESP_ERR_TIMEOUT) {
             ESP_LOGD(TAG, "IMU1 read error: %d", ret1); // Debug level logging
         }
 
         // Try to read from IMU2 - if it fails, keep using last values
-        esp_err_t ret2 = lsm6dsox_read_data_with_timeout(IMU_I2C_PORT, IMU2_ADDR, &imu2_data);
+        esp_err_t ret2 = lsm6dsox_read_data_with_timeout(I2C_PORT, IMU2_ADDR, &imu2_data);
         if (ret2 != ESP_OK && ret2 != ESP_ERR_TIMEOUT) {
             ESP_LOGD(TAG, "IMU2 read error: %d", ret2); // Debug level logging
         }
+
+        // Read temperature at its own rate
+        TickType_t current_tick = xTaskGetTickCount();
+        if (current_tick - last_temp_read_time >= pdMS_TO_TICKS(TEMP_SAMPLE_PERIOD_MS)) {
+            esp_err_t temp_ret = max30205_read_temp(&temp_data);
+            if (temp_ret == ESP_OK) {
+                // Valid new temperature reading
+                temp_updated = true;
+            }
+            last_temp_read_time = current_tick;
+        }
+
     
         // For debugging: read and log WHO_AM_I and CTRL registers
     // uint8_t whoami1 = 0;
@@ -176,10 +230,13 @@ static void imu_task(void *pvParameters) {
     // ESP_LOGI(TAG, "CTRL2_G = 0x%02x (expected 0x42)", regval);
 
         // Update the global buffer with mutex protection
-        xSemaphoreTake(s_imu_mutex, portMAX_DELAY);
+        xSemaphoreTake(s_sensors_mutex, portMAX_DELAY);
         memcpy((void*)&s_imu1_latest, &imu1_data, sizeof(imu_sample_t));
         memcpy((void*)&s_imu2_latest, &imu2_data, sizeof(imu_sample_t));
-        xSemaphoreGive(s_imu_mutex);
+        if (temp_updated) {
+            s_temp_latest = temp_data;
+        }
+        xSemaphoreGive(s_sensors_mutex);
         
         // Delay until the next sample time
         vTaskDelayUntil(&last_wake_time, pdMS_TO_TICKS(IMU_SAMPLE_PERIOD_MS));
@@ -187,47 +244,49 @@ static void imu_task(void *pvParameters) {
 }
 
 // Initialize and start the IMU task
-void imu_start(void) {
+void sensors_start(void) {
     // Create mutex for IMU data
-    s_imu_mutex = xSemaphoreCreateMutex();
+    s_sensors_mutex = xSemaphoreCreateMutex();
     
     // Initialize I2C
     i2c_config_t conf = {
         .mode = I2C_MODE_MASTER,
-        .sda_io_num = IMU_SDA_PIN,
-        .scl_io_num = IMU_SCL_PIN,
+        .sda_io_num = SDA_PIN,
+        .scl_io_num = SCL_PIN,
         .sda_pullup_en = GPIO_PULLUP_ENABLE,
         .scl_pullup_en = GPIO_PULLUP_ENABLE,
         .master.clk_speed = I2C_FREQ_HZ
     };
     
-    esp_err_t ret = i2c_param_config(IMU_I2C_PORT, &conf);
+    esp_err_t ret = i2c_param_config(I2C_PORT, &conf);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "I2C config failed: %s", esp_err_to_name(ret));
         return;
     }
     
-    ret = i2c_driver_install(IMU_I2C_PORT, I2C_MODE_MASTER, 0, 0, 0);
+    ret = i2c_driver_install(I2C_PORT, I2C_MODE_MASTER, 0, 0, 0);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "I2C driver install failed: %s", esp_err_to_name(ret));
         return;
     }
     
     // Set I2C timeout to prevent hanging
-    i2c_set_timeout(IMU_I2C_PORT, I2C_TIMEOUT_MS * 80000); // Convert ms to APB cycles
+    i2c_set_timeout(I2C_PORT, I2C_TIMEOUT_MS * 80000); // Convert ms to APB cycles
     
     // Create IMU task on Core 0 with lower priority than ADS task
-    xTaskCreatePinnedToCore(imu_task, "imu_task", 4096, NULL, configMAX_PRIORITIES - 2, NULL, 0);
+    xTaskCreatePinnedToCore(sensors_task, "sensors_task", 4096, NULL, configMAX_PRIORITIES - 2, NULL, 0);
     
-    ESP_LOGI(TAG, "IMU task started");
+    ESP_LOGI(TAG, "Sensors task started");
 }
 
 // Get the latest IMU data - thread-safe access function
-void imu_get_latest_data(imu_sample_t *imu1_data, imu_sample_t *imu2_data) {
-    if (!imu1_data || !imu2_data) return;
+void sensors_get_latest_data(imu_sample_t *imu1_data, imu_sample_t *imu2_data, float *temperature) {
+    if (!imu1_data || !imu2_data || !temperature) return;
     
-    xSemaphoreTake(s_imu_mutex, portMAX_DELAY);
+    xSemaphoreTake(s_sensors_mutex, portMAX_DELAY);
     memcpy(imu1_data, (void*)&s_imu1_latest, sizeof(imu_sample_t));
     memcpy(imu2_data, (void*)&s_imu2_latest, sizeof(imu_sample_t));
-    xSemaphoreGive(s_imu_mutex);
+    *temperature = s_temp_latest;
+
+    xSemaphoreGive(s_sensors_mutex);
 }
