@@ -28,6 +28,10 @@ static void pipeline_task(void *arg) {
     uint8_t *bin = (uint8_t *)heap_caps_malloc(SAMPLES_PER_BATCH * sample_sz, MALLOC_CAP_8BIT);
     size_t filled = 0;
 
+    // Get the serial queue handle
+    QueueHandle_t serial_q = serial_stream_get_queue();
+
+
     for (;;) {
         pkt_sample_t s;
         pkt_sample_t out;
@@ -110,8 +114,20 @@ static void pipeline_task(void *arg) {
 
             // Print first few bytes of the batch buffer for inspection
             //ESP_LOG_BUFFER_HEX(TAG, bb.data, bb.len < 32 ? bb.len : 32);
-            // Send to SD writer
-            xQueueSend(s_outQ, &bb, portMAX_DELAY);
+
+            // Try to send to SD writer
+            if (s_outQ != NULL) {
+    // Try to send to SD writer
+        if (pdPASS != xQueueSend(s_outQ, &bb, pdMS_TO_TICKS(10))) {
+            // Queue is full, so free the buffer to avoid memory leak
+            ESP_LOGW(TAG, "SD queue full, discarding batch");
+            free(bb.data);
+        }
+        } else {
+            // SD logger is not running, free the buffer
+            ESP_LOGD(TAG, "SD logger not running, discarding batch");
+            free(bb.data);
+        }
 
             // Allocate a fresh binary buffer for next fill
             bin = (uint8_t *)heap_caps_malloc(SAMPLES_PER_BATCH * sample_sz, MALLOC_CAP_8BIT);
@@ -125,26 +141,30 @@ static void pipeline_task(void *arg) {
 
     // After processing each sample at 250Hz
     sample_counter++;
-    if (sample_counter >= 3) {  // Every other sample (125Hz)
+    if (sample_counter >= 2) {  // Every other 125 samples = 0.5 seconds at 250Hz
         // Create a buffer to hold the specific values
-    float data_to_send[9];
+    // float data_to_send[9];
 
-    // Fill the buffer with the values you want to send
-    data_to_send[0] = out.ecg[1];
-    data_to_send[1] = out.ecg[2];
-    data_to_send[2] = out.ecg[3];
-    data_to_send[3] = out.ecg[7];
-    data_to_send[4] = out.imu1.accel_z;
-    data_to_send[5] = out.imu1.gyro_y;  
-    data_to_send[6] = out.imu2.accel_z;
-    data_to_send[7] = out.imu2.gyro_y;  
-    data_to_send[8] = out.temp;
+    // // Fill the buffer with the values you want to send
+    // data_to_send[0] = out.ecg[1];
+    // data_to_send[1] = out.ecg[2];
+    // data_to_send[2] = out.ecg[3];
+    // data_to_send[3] = out.ecg[7];
+    // data_to_send[4] = out.imu1.accel_z;
+    // data_to_send[5] = out.imu1.gyro_y;  
+    // data_to_send[6] = out.imu2.accel_z;
+    // data_to_send[7] = out.imu2.gyro_y;  
+    // data_to_send[8] = out.temp;
 
 // Log the buffer as hexadecimal values
-ESP_LOG_BUFFER_HEX("DATA", data_to_send, sizeof(data_to_send));
-        //serial_streamer_send_data(&out, sizeof(out));
-        vTaskDelay(1);
-        sample_counter = 0;
+// ESP_LOG_BUFFER_HEX("DATA", data_to_send, sizeof(data_to_send));
+// Check if a host is connected before queuing data
+            if (serial_q != NULL && serial_stream_is_connected()) {
+                // Send to serial queue non-blocking (0 timeout)
+                // If queue is full, we just skip this sample for serial output
+                xQueueSend(serial_q, &out, 0);
+            }
+            sample_counter = 0;
     }    
     }
 }
