@@ -142,17 +142,12 @@ QueueHandle_t sd_logger_start() {
         // Try to mount SD card
     esp_err_t err = mount_sdcard();
     if (err != ESP_OK) {
-        ESP_LOGE(TAG, "SD card mount failed: %s. System halted.", esp_err_to_name(err));
+        ESP_LOGE(TAG, "SD card mount failed: %s. Continuing without SD logging.", esp_err_to_name(err));
         
         // Turn on the error LED
         gpio_set_level(RED_LED_ANODE, 1);
+    
         
-        // Enter an infinite loop to prevent restart
-        while (1) {
-            vTaskDelay(pdMS_TO_TICKS(1000));
-        }
-        
-        // This return will never be reached
         return NULL;
     }
 
