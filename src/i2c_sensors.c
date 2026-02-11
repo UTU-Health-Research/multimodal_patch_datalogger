@@ -90,7 +90,7 @@ static esp_err_t lsm6dsox_read_data_with_timeout(i2c_port_t i2c_port, uint8_t ad
     for (int i = 0; i < 6; i++) {
         ret = i2c_read_register_with_timeout(i2c_port, addr, 0x22 + i, &buffer[i], 1);
         if (ret != ESP_OK) {
-            ESP_LOGE(TAG, "Failed to read gyro reg 0x%02x: %d", 0x22 + i, ret);
+            //ESP_LOGE(TAG, "Failed to read gyro reg 0x%02x: %d", 0x22 + i, ret);
             return ret;
         }
     }
@@ -99,7 +99,7 @@ static esp_err_t lsm6dsox_read_data_with_timeout(i2c_port_t i2c_port, uint8_t ad
     for (int i = 0; i < 6; i++) {
         ret = i2c_read_register_with_timeout(i2c_port, addr, 0x28 + i, &buffer[6 + i], 1);
         if (ret != ESP_OK) {
-            ESP_LOGE(TAG, "Failed to read accel reg 0x%02x: %d", 0x28 + i, ret);
+            //ESP_LOGE(TAG, "Failed to read accel reg 0x%02x: %d", 0x28 + i, ret);
             return ret;
         }
     }
