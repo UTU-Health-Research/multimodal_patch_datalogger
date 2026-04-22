@@ -140,8 +140,8 @@ static void init_ads1298r_registers(void) {
         0xCD, // CONFIG3
         0x00, // LOFF
         0x10, // CH1SET 0100 0000 used to be 0x10 to be turned on for resp, now turned off with 0x91
-        0x50, // CH2SET 0x50 for high gain lead 1
-        0x50, // CH3SET 0x50 for high gain lead 2
+        0x00, // CH2SET 0x50 for high gain lead 1
+        0x00, // CH3SET 0x50 for high gain lead 2
         0x00, // CH4SET
         0x00, // CH5SET
         0x00, // CH6SET
