@@ -11,6 +11,9 @@ static volatile imu_sample_t s_imu1_latest = {0};
 static volatile imu_sample_t s_imu2_latest = {0};
 static volatile float s_temp_latest = 0.0f;
 
+// Detected at runtime during init
+static temp_sensor_type_t s_temp_sensor_type = TEMP_SENSOR_NONE;
+
 // Low-level I2C read with timeout
 esp_err_t i2c_read_register_with_timeout(i2c_port_t i2c_port, uint8_t addr, uint8_t reg, uint8_t *data, size_t len) {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
@@ -120,6 +123,47 @@ static esp_err_t lsm6dsox_read_data_with_timeout(i2c_port_t i2c_port, uint8_t ad
     return ESP_OK;
 }
 
+// ============================================================
+// TMP117
+// ============================================================
+
+static esp_err_t tmp117_init(void) {
+    uint8_t id_buf[2] = {0};
+    esp_err_t ret = i2c_read_register_with_timeout(I2C_PORT, TMP117_ADDR, TMP117_REG_DEVICE_ID, id_buf, 2);
+    if (ret != ESP_OK) {
+        return ret;
+    }
+
+    uint16_t device_id = ((uint16_t)id_buf[0] << 8) | id_buf[1];
+    if (device_id != TMP117_DEVICE_ID) {
+        ESP_LOGD(TAG, "TMP117: got device ID 0x%04x, expected 0x%04x", device_id, TMP117_DEVICE_ID);
+        return ESP_ERR_INVALID_RESPONSE;
+    }
+
+    uint16_t config_val = TMP117_CONFIG_DEFAULT;
+    uint8_t config_buf[2] = {
+        (uint8_t)(config_val >> 8),
+        (uint8_t)(config_val & 0xFF)
+    };
+    ret = i2c_write_register_with_timeout(I2C_PORT, TMP117_ADDR, TMP117_REG_CONFIG, config_buf, 2);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "TMP117: config write failed: %s", esp_err_to_name(ret));
+        return ret;
+    }
+
+    return ESP_OK;
+}
+
+static esp_err_t tmp117_read(float *temperature) {
+    uint8_t data[2];
+    esp_err_t ret = i2c_read_register_with_timeout(I2C_PORT, TMP117_ADDR, TMP117_REG_TEMP, data, 2);
+    if (ret != ESP_OK) return ret;
+
+    int16_t raw = (int16_t)((data[0] << 8) | data[1]);
+    *temperature = raw * TMP117_RESOLUTION;
+    return ESP_OK;
+}
+
 // Initialize MAX30205 temperature sensor
 esp_err_t max30205_init(void) {
     // Configure the sensor - set to default mode (comparator mode, active low, one-shot)
@@ -153,6 +197,61 @@ esp_err_t max30205_read_temp(float *temperature) {
     return ESP_OK;
 }
 
+// ============================================================
+// Runtime detection and dispatch
+// ============================================================
+
+static esp_err_t temp_sensor_detect_and_init(void) {
+    // ---- Try TMP117 first (has a definitive device ID) ----
+    ESP_LOGI(TAG, "Probing for TMP117 at 0x%02x...", TMP117_ADDR);
+    if (tmp117_init() == ESP_OK) {
+        s_temp_sensor_type = TEMP_SENSOR_TMP117;
+        ESP_LOGI(TAG, "TMP117 detected and configured");
+        return ESP_OK;
+    }
+
+    // ---- Fall back to MAX30205 (same address, no unique ID) ----
+    ESP_LOGI(TAG, "TMP117 not found. Probing for MAX30205 at 0x%02x...", MAX30205_ADDR);
+    if (max30205_init() == ESP_OK) {
+        s_temp_sensor_type = TEMP_SENSOR_MAX30205;
+        ESP_LOGI(TAG, "MAX30205 detected and configured");
+        return ESP_OK;
+    }
+
+    // ---- Nothing found ----
+    s_temp_sensor_type = TEMP_SENSOR_NONE;
+    ESP_LOGW(TAG, "No temperature sensor detected");
+    return ESP_ERR_NOT_FOUND;
+}
+
+static esp_err_t temp_sensor_read(float *temperature) {
+    if (temperature == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    switch (s_temp_sensor_type) {
+        case TEMP_SENSOR_TMP117:
+            return tmp117_read(temperature);
+        case TEMP_SENSOR_MAX30205:
+            return max30205_read_temp(temperature);
+        default:
+            return ESP_ERR_INVALID_STATE;
+    }
+}
+
+// ============================================================
+// Public query
+// ============================================================
+
+temp_sensor_type_t sensors_get_temp_sensor_type(void) {
+    return s_temp_sensor_type;
+}
+
+
+// ============================================================
+// Sensor task
+// ============================================================
+
 // IMU task - runs on Core 0
 static void sensors_task(void *pvParameters) {
     imu_sample_t imu1_data = {0}, imu2_data = {0};
@@ -166,12 +265,15 @@ static void sensors_task(void *pvParameters) {
     // Try to initialize I2C sensors
     bool init_success1 = (lsm6dsox_init_with_timeout(I2C_PORT, IMU1_ADDR) == ESP_OK);
     bool init_success2 = (lsm6dsox_init_with_timeout(I2C_PORT, IMU2_ADDR) == ESP_OK);
-    bool temp_init_success = (max30205_init() == ESP_OK);
-
+    
+     // Auto-detect whichever temperature sensor is on the bus
+    temp_sensor_detect_and_init();
     
     ESP_LOGI(TAG, "IMU1 init: %s", init_success1 ? "Success" : "Failed");
     ESP_LOGI(TAG, "IMU2 init: %s", init_success2 ? "Success" : "Failed");
-    ESP_LOGI(TAG, "Temperature sensor init: %s", temp_init_success ? "Success" : "Failed");
+    
+     const char *temp_name[] = {"NONE", "TMP117", "MAX30205"};
+    ESP_LOGI(TAG, "Temp sensor: %s", temp_name[s_temp_sensor_type]);
     
     // Main task loop
     while(1) {
@@ -187,17 +289,13 @@ static void sensors_task(void *pvParameters) {
             ESP_LOGD(TAG, "IMU2 read error: %d", ret2); // Debug level logging
         }
 
-        // Read temperature at its own rate
-        TickType_t current_tick = xTaskGetTickCount();
-        if (current_tick - last_temp_read_time >= pdMS_TO_TICKS(TEMP_SAMPLE_PERIOD_MS)) {
-            esp_err_t temp_ret = max30205_read_temp(&temp_data);
-            if (temp_ret == ESP_OK) {
-                // Valid new temperature reading
+        TickType_t now = xTaskGetTickCount();
+        if (now - last_temp_read_time >= pdMS_TO_TICKS(TEMP_SAMPLE_PERIOD_MS)) {
+            if (temp_sensor_read(&temp_data) == ESP_OK) {
                 temp_updated = true;
             }
-            last_temp_read_time = current_tick;
+            last_temp_read_time = now;
         }
-
     
         // For debugging: read and log WHO_AM_I and CTRL registers
     // uint8_t whoami1 = 0;
@@ -242,6 +340,10 @@ static void sensors_task(void *pvParameters) {
         vTaskDelayUntil(&last_wake_time, pdMS_TO_TICKS(IMU_SAMPLE_PERIOD_MS));
     }
 }
+
+// ============================================================
+// Public API
+// ============================================================
 
 // Initialize and start the IMU task
 void sensors_start(void) {
