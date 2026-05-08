@@ -62,9 +62,34 @@
 #define SENSITIVITY_GYROSCOPE      4.375f   // mdps/LSB for ±125DPS range
 
 // Temperature sensor configuration
-#define MAX30205_ADDR          0x48 // MAX30205 sensor address (default is 0x48, may vary based on address pins)
-#define MAX30205_REG_TEMP      0x00
+// #define MAX30205_ADDR          0x48 // MAX30205 sensor address (default is 0x48, may vary based on address pins)
+// #define MAX30205_REG_TEMP      0x00
+// #define MAX30205_REG_CONFIG    0x01
+// #define MAX30205_REG_THYST     0x02
+// #define MAX30205_REG_TOS       0x03
+// #define TEMP_SAMPLE_PERIOD_MS  10 // 1000Hz sampling
+
+// =============================================
+// Temperature Sensors — both defined, detected at runtime
+// =============================================
+
+// TMP117
+#define TMP117_ADDR              0x48
+#define TMP117_REG_TEMP          0x00
+#define TMP117_REG_CONFIG        0x01
+#define TMP117_REG_DEVICE_ID     0x0F
+#define TMP117_DEVICE_ID         0x0117
+#define TMP117_RESOLUTION        0.0078125f
+
+// TMP117 configuration options (16-bit register)
+#define TMP117_CONFIG_CONTINUOUS_8AVG     0x0020  // ~8 Hz
+#define TMP117_CONFIG_DEFAULT             TMP117_CONFIG_CONTINUOUS_8AVG
+
+// MAX30205
+#define MAX30205_ADDR            0x48
+#define MAX30205_REG_TEMP        0x00
 #define MAX30205_REG_CONFIG    0x01
 #define MAX30205_REG_THYST     0x02
 #define MAX30205_REG_TOS       0x03
 #define TEMP_SAMPLE_PERIOD_MS  10 // 1000Hz sampling
+#define MAX30205_RESOLUTION      0.00390625f
