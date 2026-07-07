@@ -1,0 +1,27 @@
+dependencies:
+  espressif/dl_fft:
+    component_hash: 2f319e72f3ab6f673c83849d6a14b68c21165d4dce24e12af7c13714ba35a6e0
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 0.5.0
+  espressif/esp-dl:
+    component_hash: d6f5f960bc1e6af82cd9b064bdf674b78128d003168043d08137f5be2bb22014
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 3.3.7
+  espressif/esp_new_jpeg:
+    component_hash: e1e7e6991193c41ed6c9fc386702aa7821433319e7aa9c3147cd3236310cd69c
+    source:
+      service_url: https://api.components.espressif.com/
+      type: service
+    version: 1.0.2
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.4.0
+manifest_hash: 9c1fb504c666b46a41c2775d6dc86f51ad5c8cb04683fa24b69fab6b421dc115
+target: esp32s3
+version: 1.0.0

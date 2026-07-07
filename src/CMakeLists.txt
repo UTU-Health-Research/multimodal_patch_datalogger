@@ -1,6 +1,25 @@
-# This file was automatically generated for projects
-# without default 'CMakeLists.txt' file.
-
-FILE(GLOB_RECURSE app_sources ${CMAKE_SOURCE_DIR}/src/*.*)
-
-idf_component_register(SRCS ${app_sources})
+idf_component_register(
+    SRCS
+        "main.c"
+        "ads1298r.c"
+        "i2c_sensors.c"
+        "pipeline.c"
+        "sd_logger.c"
+        "serial_stream.c"
+        "ecg_inference.cpp"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        driver
+        esp-dl
+        fatfs
+        sdmmc
+        esp_timer
+        esp_driver_spi
+        esp_driver_gpio
+        esp_driver_i2c
+        esp_driver_uart
+        esp_driver_usb_serial_jtag
+    EMBED_FILES
+        "models/model.espdl"
+)

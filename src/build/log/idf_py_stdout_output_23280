@@ -1,0 +1,8 @@
+Command: cmake -G Ninja -B D:\POC4TRIAGE-usman\DataLogger\v3_board_codes\multimodal_patch_datalogger-multimod_plus_temp\src\build -DPYTHON_DEPS_CHECKED=1 -DPYTHON=C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe -DESP_PLATFORM=1 -DCCACHE_ENABLE=True D:\POC4TRIAGE-usman\DataLogger\v3_board_codes\multimodal_patch_datalogger-multimod_plus_temp\src
+-- The C compiler identification is Clang 20.1.1
+-- The CXX compiler identification is Clang 20.1.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - failed
+-- Check for working C compiler: C:/Espressif/tools/esp-clang/esp-20.1.1_20250829/esp-clang/bin/clang.exe
+-- Check for working C compiler: C:/Espressif/tools/esp-clang/esp-20.1.1_20250829/esp-clang/bin/clang.exe - broken
+-- Configuring incomplete, errors occurred!
