@@ -1,0 +1,709 @@
+Command: C:\Espressif\python_env\idf5.5_py3.11_env\Scripts\python.exe C:\Espressif\frameworks\esp-idf-v5.5.4\tools/idf_monitor.py -p COM12 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --target esp32s3 --revision 0 D:\POC4TRIAGE-usman\DataLogger\v2_board_codes\multimodal_datalogger\build\multimode_logger_rtos.elf D:\POC4TRIAGE-usman\DataLogger\v2_board_codes\multimodal_datalogger\build\bootloader\bootloader.elf --force-color -m 'C:\Espressif\python_env\idf5.5_py3.11_env\Scripts\python.exe' 'C:\Espressif\frameworks\esp-idf-v5.5.4\tools\idf.py' '-p' 'COM12'
+[0;32mI (108) esp_image: segment 1: paddr=0009227c vaddr=3fc9fe00 sizeESP-ROM:esp32s3-20210327[0m
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0xb (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4038bb5b
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x16a4
+load:0x403c8700,len:0xe80
+load:0x403cb700,len:0x3188
+entry 0x403c8948
+[0;32mI (24) boot: ESP-IDF v5.5.4 2nd stage bootloader[0m
+[0;32mI (24) boot: compile time Jul  8 2026 16:30:29[0m
+[0;32mI (25) boot: Multicore bootloader[0m
+[0;32mI (25) boot: chip revision: v0.2[0m
+[0;32mI (25) boot: efuse block revision: v1.3[0m
+[0;32mI (25) qio_mode: Enabling default flash chip QIO[0m
+[0;32mI (25) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (26) boot.esp32s3: SPI Mode       : QIO[0m
+[0;32mI (26) boot.esp32s3: SPI Flash Size : 16MB[0m
+[0;32mI (26) boot: Enabling RNG early entropy source...[0m
+[0;32mI (26) boot: Partition Table:[0m
+[0;32mI (26) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (27) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (27) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (27) boot:  2 factory          factory app      00 00 00010000 00f00000[0m
+[0;32mI (28) boot: End of partition table[0m
+[0;32mI (28) esp_image: segment 0: paddr=00010020 vaddr=3c120020 size=82254h (533076) map[0m
+[0;32mI (108) esp_image: segment 1: paddr=0009227c vaddr=3fc9fe00 size=04a0ch ( 18956) load[0m
+[0;32mI (111) esp_image: segment 2: paddr=00096c90 vaddr=40374000 size=09388h ( 37768) load[0m
+[0;32mI (119) esp_image: segment 3: paddr=000a0020 vaddr=42000020 size=111e1ch (1121820) map[0m
+[0;32mI (286) esp_image: segment 4: paddr=001b1e44 vaddr=4037d388 size=129b8h ( 76216) load[0m
+[0;32mI (300) esp_image: segment 5: paddr=001c4804 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (311) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (312) boot: Disabling RNG early entropy source...[0m
+[0;32mI (312) octal_psram: vendor id    : 0x0d (AP)[0m
+[0;32mI (313) octal_psram: dev id       : 0x02 (generation 3)[0m
+[0;32mI (313) octal_psram: density      : 0x03 (64 Mbit)[0m
+[0;32mI (313) octal_psram: good-die     : 0x01 (Pass)[0m
+[0;32mI (313) octal_psram: Latency      : 0x01 (Fixed)[0m
+[0;32mI (313) octal_psram: VCC          : 0x01 (3V)[0m
+[0;32mI (314) octal_psram: SRF          : 0x01 (Fast Refresh)[0m
+[0;32mI (314) octal_psram: BurstType    : 0x01 (Hybrid Wrap)[0m
+[0;32mI (314) octal_psram: BurstLen     : 0x01 (32 Byte)[0m
+[0;32mI (314) octal_psram: Readlatency  : 0x02 (10 cycles@Fixed)[0m
+[0;32mI (315) octal_psram: DriveStrength: 0x00 (1/1)[0m
+[0;32mI (315) MSPI Timing: Enter psram timing tuning[0m
+[0;32mI (316) esp_psram: Found 8MB PSRAM device[0m
+[0;32mI (316) esp_psram: Speed: 80MHz[0m
+[0;32mI (316) cpu_start: Multicore app[0m
+[0;32mI (742) esp_psram: SPI SRAM memory test OK[0m
+[0;32mI (751) cpu_start: Pro cpu start user code[0m
+[0;32mI (751) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (751) app_init: Application information:[0m
+[0;32mI (751) app_init: Project name:     multimode_logger_rtos[0m
+[0;32mI (751) app_init: App version:      fe62192-dirty[0m
+[0;32mI (752) app_init: Compile time:     Jul  8 2026 16:29:48[0m
+[0;32mI (752) app_init: ELF file SHA256:  0c49be225...[0m
+[0;32mI (752) app_init: ESP-IDF:          v5.5.4[0m
+[0;32mI (752) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (752) efuse_init: Max chip rev:     v0.99 [0m
+[0;32mI (753) efuse_init: Chip rev:         v0.2[0m
+[0;32mI (753) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (753) heap_init: At 3FCA7000 len 00042710 (265 KiB): RAM[0m
+[0;32mI (753) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (753) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (754) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM[0m
+[0;32mI (754) esp_psram: Adding pool of 8192K of PSRAM memory to heap allocator[0m
+[0;32mI (755) spi_flash: detected chip: generic[0m
+[0;32mI (755) spi_flash: flash io: qio[0m
+[0;33mW (755) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (756) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (756) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (757) main_task: Started on CPU0[0m
+[0;32mI (758) esp_psram: Reserving pool of 64K of internal memory for DMA/internal allocations[0m
+[0;32mI (759) main_task: Calling app_main()[0m
+[0;32mI (759) app: Application starting[0m
+[1;31mE (759) i2c: i2c_set_timeout(969): i2c timing value error[0m
+[0;32mI (760) IMU: Sensors task started[0m
+[0;32mI (761) IMU: Probing for TMP117 at 0x48...[0m
+[0;32mI (762) IMU: TMP117 detected and configured[0m
+[0;32mI (762) IMU: IMU1 init: Success[0m
+[0;32mI (763) IMU: IMU2 init: Success[0m
+[0;32mI (763) IMU: Temp sensor: TMP117[0m
+[0;32mI (1073) ads1298r: ID=0xD2[0m
+[0;32mI (1079) sdspi_transaction: cmd=52, R1 response: command not supported[0m
+[0;32mI (1126) sdspi_transaction: cmd=5, R1 response: command not supported[0m
+Name: SL16G
+Type: SDHC
+Speed: 20.00 MHz (limit: 20.00 MHz)
+Size: 15193MB
+CSD: ver=2, sector_size=512, capacity=31116288 read_bl_len=9
+SSR: bus_width=1
+[0;32mI (1248) sd_logger: Opened /sdcard/DAT_0006.bin for writing[0m
+[0;32mI (1250) ecg_inference: Initializing ECG inference engine[0m
+[0;32mI (1251) ecg_inference: Embedded model size: 300400 bytes[0m
+[0;32mI (2764) ecg_inference: Ready: device=500 Hz  model=250 Hz  window=4096 samples (16.4 s)[0m
+[0;32mI (2767) ble_stream: Initializing BLE[0m
+[0;32mI (2793) BLE_INIT: BT controller compile version [b7de11e][0m
+[0;32mI (2795) BLE_INIT: Using main XTAL as clock source[0m
+[0;32mI (2797) BLE_INIT: Feature Config, ADV:1, BLE_50:1, DTM:1, SCAN:1, CCA:0, SMP:1, CONNECT:1[0m
+[0;32mI (2801) BLE_INIT: Bluetooth MAC: 3c:0f:02:ce:e9:e6[0m
+[0;32mI (2803) phy_init: phy_version 711,97bcf0a2,Aug 25 2025,19:04:10[0m
+[0;32mI (2959) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (2965) NimBLE: GAP procedure initiated: advertise; [0m
+[0;32mI (2967) NimBLE: disc_mode=2[0m
+[0;32mI (2967) NimBLE:  adv_channel_map=0 own_addr_type=0 adv_filter_policy=0 adv_itvl_min=0 adv_itvl_max=0[0m
+[0;32mI (2969) NimBLE: [0m
+
+[0;32mI (2971) ble_stream: Advertising started[0m
+[0;32mI (2973) ble_stream: BLE ready, advertising as 'POC4TRIAGE_APP'[0m
+[0;32mI (2974) pipeline: File header sent (32 bytes)[0m
+[0;32mI (2974) app: System running: 500Hz acq, 250Hz SD, BLE streaming, inference[0m
+[0;32mI (2981) main_task: Returned from app_main()[0m
+[0;32mI (2992) sd_logger: SD sync at 2220593 us[0m
+[0;32mI (4097) sd_logger: SD sync at 3328999 us[0m
+[0;32mI (5289) sd_logger: SD sync at 4523420 us[0m
+[0;32mI (6312) sd_logger: SD sync at 5546423 us[0m
+[0;32mI (7336) sd_logger: SD sync at 6570956 us[0m
+[0;32mI (8352) sd_logger: SD sync at 7592814 us[0m
+[0;32mI (9383) sd_logger: SD sync at 8617278 us[0m
+[0;32mI (10406) sd_logger: SD sync at 9640665 us[0m
+[0;32mI (11427) sd_logger: SD sync at 10668491 us[0m
+[0;32mI (12455) sd_logger: SD sync at 11686508 us[0m
+[0;32mI (13476) sd_logger: SD sync at 12710380 us[0m
+[0;32mI (14504) sd_logger: SD sync at 13738227 us[0m
+[0;32mI (15519) sd_logger: SD sync at 14759853 us[0m
+[0;32mI (16560) sd_logger: SD sync at 15794757 us[0m
+[0;32mI (17901) ecg_inference: window=0  inference=359.2 ms  max=39732003  prob=1.000[0m
+[0;32mI (17902) pipeline: Prediction (window 0)[0m
+[0;32mI (17910) sd_logger: SD sync at 17148123 us[0m
+[0;32mI (19094) sd_logger: SD sync at 18326499 us[0m
+[0;32mI (20646) sd_logger: SD sync at 19880909 us[0m
+[0;32mI (21664) sd_logger: SD sync at 20904522 us[0m
+[0;32mI (22692) sd_logger: SD sync at 21927005 us[0m
+[0;32mI (23718) sd_logger: SD sync at 22952191 us[0m
+[0;32mI (24739) sd_logger: SD sync at 23974144 us[0m
+[0;32mI (25759) sd_logger: SD sync at 24999706 us[0m
+[0;32mI (26786) sd_logger: SD sync at 26020180 us[0m
+[0;32mI (27815) sd_logger: SD sync at 27049693 us[0m
+[0;32mI (28828) sd_logger: SD sync at 28068949 us[0m
+[0;32mI (29860) sd_logger: SD sync at 29094348 us[0m
+[0;32mI (30882) sd_logger: SD sync at 30116810 us[0m
+[0;32mI (31902) sd_logger: SD sync at 31142825 us[0m
+[0;32mI (32929) sd_logger: SD sync at 32163396 us[0m
+[0;32mI (34280) ecg_inference: window=1  inference=356.5 ms  max=426783006  prob=0.932[0m
+[0;32mI (34281) pipeline: Prediction (window 1)[0m
+[0;32mI (34292) sd_logger: SD sync at 33527021 us[0m
+[0;32mI (36000) sd_logger: SD sync at 35234463 us[0m
+[0;32mI (37028) sd_logger: SD sync at 36262981 us[0m
+[0;32mI (38050) sd_logger: SD sync at 37283975 us[0m
+[0;32mI (39341) sd_logger: SD sync at 38582210 us[0m
+[0;32mI (41122) sd_logger: SD sync at 40355783 us[0m
+[0;32mI (42141) sd_logger: SD sync at 41380150 us[0m
+[0;32mI (43168) sd_logger: SD sync at 42402787 us[0m
+[0;32mI (44197) sd_logger: SD sync at 43429921 us[0m
+[0;32mI (45209) sd_logger: SD sync at 44449602 us[0m
+[0;32mI (46242) sd_logger: SD sync at 45476793 us[0m
+[0;32mI (47264) sd_logger: SD sync at 46498745 us[0m
+[0;32mI (48288) sd_logger: SD sync at 47523126 us[0m
+[0;32mI (49305) sd_logger: SD sync at 48546151 us[0m
+[0;32mI (50661) ecg_inference: window=2  inference=356.4 ms  max=426783006  prob=0.947[0m
+[0;32mI (50663) pipeline: Prediction (window 2)[0m
+[0;32mI (50674) sd_logger: SD sync at 49908948 us[0m
+[0;32mI (52090) sd_logger: SD sync at 51322139 us[0m
+[0;32mI (53409) sd_logger: SD sync at 52643362 us[0m
+[0;32mI (54430) sd_logger: SD sync at 53664356 us[0m
+[0;32mI (55452) sd_logger: SD sync at 54693083 us[0m
+[0;32mI (56479) sd_logger: SD sync at 55713342 us[0m
+[0;32mI (57504) sd_logger: SD sync at 56737823 us[0m
+[0;32mI (58519) sd_logger: SD sync at 57759941 us[0m
+[0;32mI (59553) sd_logger: SD sync at 58787040 us[0m
+[0;32mI (60804) sd_logger: SD sync at 60011553 us[0m
+[0;32mI (62089) sd_logger: SD sync at 61321259 us[0m
+[0;32mI (63646) sd_logger: SD sync at 62880832 us[0m
+[0;32mI (64672) sd_logger: SD sync at 63906927 us[0m
+[0;32mI (65689) sd_logger: SD sync at 64929556 us[0m
+[0;32mI (67044) ecg_inference: window=3  inference=356.5 ms  max=426783006  prob=0.932[0m
+[0;32mI (67046) pipeline: Prediction (window 3)[0m
+[0;32mI (67053) sd_logger: SD sync at 66291946 us[0m
+[0;32mI (68088) sd_logger: SD sync at 67320940 us[0m
+[0;32mI (69790) sd_logger: SD sync at 69024334 us[0m
+[0;32mI (70816) sd_logger: SD sync at 70050578 us[0m
+[0;32mI (71842) sd_logger: SD sync at 71075379 us[0m
+[0;32mI (72854) sd_logger: SD sync at 72095144 us[0m
+[0;32mI (73887) sd_logger: SD sync at 73121996 us[0m
+[0;32mI (75046) sd_logger: SD sync at 74252822 us[0m
+[0;32mI (76062) sd_logger: SD sync at 75302884 us[0m
+[0;32mI (77088) sd_logger: SD sync at 76320411 us[0m
+[0;32mI (79004) sd_logger: SD sync at 78238223 us[0m
+[0;32mI (80031) sd_logger: SD sync at 79265643 us[0m
+[0;32mI (81053) sd_logger: SD sync at 80287561 us[0m
+[0;32mI (82083) sd_logger: SD sync at 81324161 us[0m
+[0;32mI (83428) ecg_inference: window=4  inference=356.5 ms  max=426783006  prob=0.940[0m
+[0;32mI (83429) pipeline: Prediction (window 4)[0m
+[0;32mI (83436) sd_logger: SD sync at 82675025 us[0m
+[0;32mI (85150) sd_logger: SD sync at 84384630 us[0m
+[0;32mI (86167) sd_logger: SD sync at 85407556 us[0m
+[0;32mI (87199) sd_logger: SD sync at 86433850 us[0m
+[0;32mI (88223) sd_logger: SD sync at 87456555 us[0m
+[0;32mI (89240) sd_logger: SD sync at 88480687 us[0m
+[0;32mI (90271) sd_logger: SD sync at 89503235 us[0m
+[0;32mI (91293) sd_logger: SD sync at 90527602 us[0m
+[0;32mI (92311) sd_logger: SD sync at 91552407 us[0m
+[0;32mI (93343) sd_logger: SD sync at 92577313 us[0m
+[0;32mI (94367) sd_logger: SD sync at 93602018 us[0m
+[0;32mI (95387) sd_logger: SD sync at 94621842 us[0m
+[0;32mI (96408) sd_logger: SD sync at 95649421 us[0m
+[0;32mI (97437) sd_logger: SD sync at 96671210 us[0m
+[0;32mI (98463) sd_logger: SD sync at 97696694 us[0m
+[0;32mI (99811) ecg_inference: window=5  inference=356.4 ms  max=426783006  prob=0.940[0m
+[0;32mI (99813) pipeline: Prediction (window 5)[0m
+[0;32mI (99820) sd_logger: SD sync at 99058759 us[0m
+[0;32mI (101088) sd_logger: SD sync at 100319999 us[0m
+[0;32mI (102087) sd_logger: SD sync at 101320022 us[0m
+[0;32mI (103583) sd_logger: SD sync at 102817878 us[0m
+[0;32mI (104616) sd_logger: SD sync at 103850455 us[0m
+[0;32mI (105630) sd_logger: SD sync at 104864502 us[0m
+[0;32mI (106647) sd_logger: SD sync at 105887512 us[0m
+[0;32mI (107679) sd_logger: SD sync at 106913190 us[0m
+[0;32mI (108700) sd_logger: SD sync at 107934395 us[0m
+[0;32mI (109722) sd_logger: SD sync at 108963296 us[0m
+[0;32mI (110749) sd_logger: SD sync at 109983354 us[0m
+[0;32mI (111774) sd_logger: SD sync at 111008054 us[0m
+[0;32mI (112791) sd_logger: SD sync at 112032143 us[0m
+[0;32mI (113821) sd_logger: SD sync at 113055341 us[0m
+[0;32mI (114849) sd_logger: SD sync at 114081353 us[0m
+[0;32mI (116195) ecg_inference: window=6  inference=356.3 ms  max=426783006  prob=0.953[0m
+[0;32mI (116196) pipeline: Prediction (window 6)[0m
+[0;32mI (116204) sd_logger: SD sync at 115442608 us[0m
+[0;32mI (117917) sd_logger: SD sync at 117151069 us[0m
+[0;32mI (118941) sd_logger: SD sync at 118175839 us[0m
+[0;32mI (119960) sd_logger: SD sync at 119199117 us[0m
+[0;32mI (120990) sd_logger: SD sync at 120225027 us[0m
+[0;32mI (122013) sd_logger: SD sync at 121247875 us[0m
+[0;32mI (123029) sd_logger: SD sync at 122270404 us[0m
+[0;32mI (124068) sd_logger: SD sync at 123302615 us[0m
+[0;32mI (125085) sd_logger: SD sync at 124319858 us[0m
+[0;32mI (126210) sd_logger: SD sync at 125451381 us[0m
+[0;32mI (128159) sd_logger: SD sync at 127393485 us[0m
+[0;32mI (129182) sd_logger: SD sync at 128416673 us[0m
+[0;32mI (130202) sd_logger: SD sync at 129442681 us[0m
+[0;32mI (131233) sd_logger: SD sync at 130465244 us[0m
+[0;32mI (132579) ecg_inference: window=7  inference=356.2 ms  max=426783006  prob=0.932[0m
+[0;32mI (132580) pipeline: Prediction (window 7)[0m
+[0;32mI (132588) sd_logger: SD sync at 131826269 us[0m
+[0;32mI (134088) sd_logger: SD sync at 133319826 us[0m
+[0;32mI (135328) sd_logger: SD sync at 134562874 us[0m
+[0;32mI (136344) sd_logger: SD sync at 135584712 us[0m
+[0;32mI (137378) sd_logger: SD sync at 136612522 us[0m
+[0;32mI (138397) sd_logger: SD sync at 137631927 us[0m
+[0;32mI (139418) sd_logger: SD sync at 138659100 us[0m
+[0;32mI (140448) sd_logger: SD sync at 139680653 us[0m
+[0;32mI (141469) sd_logger: SD sync at 140703655 us[0m
+[0;32mI (142499) sd_logger: SD sync at 141731365 us[0m
+[0;32mI (143512) sd_logger: SD sync at 142752809 us[0m
+[0;32mI (144544) sd_logger: SD sync at 143777584 us[0m
+[0;32mI (145565) sd_logger: SD sync at 144799205 us[0m
+[0;32mI (146586) sd_logger: SD sync at 145827009 us[0m
+[0;32mI (147719) sd_logger: SD sync at 146927387 us[0m
+[0;32mI (148963) ecg_inference: window=8  inference=356.4 ms  max=426783006  prob=0.867[0m
+[0;32mI (148965) pipeline: Prediction (window 8)[0m
+[0;32mI (148990) sd_logger: SD sync at 148210815 us[0m
+[0;32mI (150088) sd_logger: SD sync at 149320114 us[0m
+[0;32mI (151088) sd_logger: SD sync at 150320178 us[0m
+[0;32mI (152088) sd_logger: SD sync at 151320239 us[0m
+[0;32mI (153088) sd_logger: SD sync at 152320326 us[0m
+[0;32mI (154082) sd_logger: SD sync at 153320424 us[0m
+[0;32mI (155089) sd_logger: SD sync at 154320526 us[0m
+[0;32mI (156088) sd_logger: SD sync at 155320591 us[0m
+[0;32mI (157082) sd_logger: SD sync at 156320640 us[0m
+[0;32mI (158088) sd_logger: SD sync at 157320737 us[0m
+[0;32mI (159088) sd_logger: SD sync at 158320804 us[0m
+[0;32mI (160082) sd_logger: SD sync at 159320888 us[0m
+[0;32mI (161089) sd_logger: SD sync at 160320988 us[0m
+[0;32mI (162089) sd_logger: SD sync at 161321085 us[0m
+[0;32mI (163082) sd_logger: SD sync at 162321159 us[0m
+[0;32mI (164089) sd_logger: SD sync at 163321241 us[0m
+[0;32mI (165348) ecg_inference: window=9  inference=356.3 ms  max=426783006  prob=0.947[0m
+[0;32mI (165350) pipeline: Prediction (window 9)[0m
+[0;32mI (165357) sd_logger: SD sync at 164595975 us[0m
+[0;32mI (167073) sd_logger: SD sync at 166307538 us[0m
+[0;32mI (168095) sd_logger: SD sync at 167328444 us[0m
+[0;32mI (169393) sd_logger: SD sync at 168355281 us[0m
+[0;32mI (170198) sd_logger: SD sync at 169435915 us[0m
+[0;32mI (172090) sd_logger: SD sync at 171322000 us[0m
+[0;32mI (173090) sd_logger: SD sync at 172322109 us[0m
+[0;32mI (174084) sd_logger: SD sync at 173322209 us[0m
+[0;32mI (175090) sd_logger: SD sync at 174322336 us[0m
+[0;32mI (176091) sd_logger: SD sync at 175322430 us[0m
+[0;32mI (177091) sd_logger: SD sync at 176322544 us[0m
+[0;32mI (178084) sd_logger: SD sync at 177322653 us[0m
+[0;32mI (179091) sd_logger: SD sync at 178322752 us[0m
+[0;32mI (180091) sd_logger: SD sync at 179322863 us[0m
+[0;32mI (181085) sd_logger: SD sync at 180322973 us[0m
+[0;32mI (181734) ecg_inference: window=10  inference=356.5 ms  max=426783006  prob=0.940[0m
+[0;32mI (181735) pipeline: Prediction (window 10)[0m
+[0;32mI (182091) sd_logger: SD sync at 181323071 us[0m
+[0;32mI (183091) sd_logger: SD sync at 182323154 us[0m
+[0;32mI (184085) sd_logger: SD sync at 183323263 us[0m
+[0;32mI (185091) sd_logger: SD sync at 184323369 us[0m
+[0;32mI (186092) sd_logger: SD sync at 185323449 us[0m
+[0;32mI (187085) sd_logger: SD sync at 186323538 us[0m
+[0;32mI (188092) sd_logger: SD sync at 187323624 us[0m
+[0;32mI (189094) sd_logger: SD sync at 188323684 us[0m
+[0;32mI (190092) sd_logger: SD sync at 189323753 us[0m
+[0;32mI (191086) sd_logger: SD sync at 190323838 us[0m
+[0;32mI (192092) sd_logger: SD sync at 191323936 us[0m
+[0;32mI (193094) sd_logger: SD sync at 192324027 us[0m
+[0;32mI (194086) sd_logger: SD sync at 193324137 us[0m
+[0;32mI (195092) sd_logger: SD sync at 194324215 us[0m
+[0;32mI (196092) sd_logger: SD sync at 195324324 us[0m
+[0;32mI (197086) sd_logger: SD sync at 196324396 us[0m
+[0;32mI (198120) ecg_inference: window=11  inference=356.6 ms  max=426783006  prob=0.622[0m
+[0;32mI (198121) pipeline: Prediction (window 11)[0m
+[0;32mI (198129) sd_logger: SD sync at 197367405 us[0m
+[0;32mI (199851) sd_logger: SD sync at 199084925 us[0m
+[0;32mI (200868) sd_logger: SD sync at 200108611 us[0m
+[0;32mI (201900) sd_logger: SD sync at 201133705 us[0m
+[0;32mI (202922) sd_logger: SD sync at 202156979 us[0m
+[0;32mI (203942) sd_logger: SD sync at 203183076 us[0m
+[0;32mI (204970) sd_logger: SD sync at 204204279 us[0m
+[0;32mI (205997) sd_logger: SD sync at 205230151 us[0m
+[0;32mI (207010) sd_logger: SD sync at 206250967 us[0m
+[0;32mI (208047) sd_logger: SD sync at 207281344 us[0m
+[0;32mI (209067) sd_logger: SD sync at 208301099 us[0m
+[0;32mI (210091) sd_logger: SD sync at 209325857 us[0m
+[0;32mI (211110) sd_logger: SD sync at 210348746 us[0m
+[0;32mI (212139) sd_logger: SD sync at 211372785 us[0m
+[0;32mI (213176) sd_logger: SD sync at 212410581 us[0m
+[0;32mI (214505) ecg_inference: window=12  inference=356.1 ms  max=426783006  prob=0.940[0m
+[0;32mI (214506) pipeline: Prediction (window 12)[0m
+[0;32mI (214514) sd_logger: SD sync at 213752655 us[0m
+[0;32mI (216095) sd_logger: SD sync at 215326556 us[0m
+[0;32mI (217096) sd_logger: SD sync at 216326727 us[0m
+[0;32mI (218088) sd_logger: SD sync at 217326853 us[0m
+[0;32mI (219095) sd_logger: SD sync at 218326958 us[0m
+[0;32mI (220095) sd_logger: SD sync at 219327090 us[0m
+[0;32mI (221089) sd_logger: SD sync at 220327237 us[0m
+[0;32mI (222096) sd_logger: SD sync at 221327369 us[0m
+[0;32mI (223095) sd_logger: SD sync at 222327508 us[0m
+[0;32mI (224096) sd_logger: SD sync at 223327670 us[0m
+[0;32mI (225089) sd_logger: SD sync at 224327818 us[0m
+[0;32mI (226096) sd_logger: SD sync at 225327977 us[0m
+[0;32mI (227098) sd_logger: SD sync at 226328130 us[0m
+[0;32mI (228090) sd_logger: SD sync at 227328284 us[0m
+[0;32mI (229097) sd_logger: SD sync at 228328433 us[0m
+[0;32mI (230099) sd_logger: SD sync at 229328573 us[0m
+[0;32mI (230892) ecg_inference: window=13  inference=356.5 ms  max=426783006  prob=0.881[0m
+[0;32mI (230893) pipeline: Prediction (window 13)[0m
+[0;32mI (231090) sd_logger: SD sync at 230328709 us[0m
+[0;32mI (232097) sd_logger: SD sync at 231328826 us[0m
+[0;32mI (233097) sd_logger: SD sync at 232328960 us[0m
+[0;32mI (234097) sd_logger: SD sync at 233329090 us[0m
+[0;32mI (235091) sd_logger: SD sync at 234329250 us[0m
+[0;32mI (236097) sd_logger: SD sync at 235329396 us[0m
+[0;32mI (237098) sd_logger: SD sync at 236329512 us[0m
+[0;32mI (238091) sd_logger: SD sync at 237329674 us[0m
+[0;32mI (239101) sd_logger: SD sync at 238329831 us[0m
+[0;32mI (240098) sd_logger: SD sync at 239329990 us[0m
+[0;32mI (241092) sd_logger: SD sync at 240330159 us[0m
+[0;32mI (242098) sd_logger: SD sync at 241330345 us[0m
+[0;32mI (243098) sd_logger: SD sync at 242330466 us[0m
+[0;32mI (244092) sd_logger: SD sync at 243330648 us[0m
+[0;32mI (245099) sd_logger: SD sync at 244330825 us[0m
+[0;32mI (246099) sd_logger: SD sync at 245330983 us[0m
+[0;32mI (247278) ecg_inference: window=14  inference=356.6 ms  max=426783006  prob=0.940[0m
+[0;32mI (247280) pipeline: Prediction (window 14)[0m
+[0;32mI (247288) sd_logger: SD sync at 246525991 us[0m
+[0;32mI (249010) sd_logger: SD sync at 248243639 us[0m
+[0;32mI (250035) sd_logger: SD sync at 249268971 us[0m
+[0;32mI (251050) sd_logger: SD sync at 250290997 us[0m
+[0;32mI (252085) sd_logger: SD sync at 251317638 us[0m
+[0;32mI (253104) sd_logger: SD sync at 252338229 us[0m
+[0;32mI (254125) sd_logger: SD sync at 253366000 us[0m
+[0;32mI (255153) sd_logger: SD sync at 254387630 us[0m
+[0;32mI (256527) sd_logger: SD sync at 255760435 us[0m
+[0;32mI (258101) sd_logger: SD sync at 257332969 us[0m
+[0;32mI (259095) sd_logger: SD sync at 258333137 us[0m
+[0;32mI (260101) sd_logger: SD sync at 259333316 us[0m
+[0;32mI (261101) sd_logger: SD sync at 260333513 us[0m
+[0;32mI (262095) sd_logger: SD sync at 261333688 us[0m
+[0;32mI (263102) sd_logger: SD sync at 262333878 us[0m
+[0;32mI (263665) ecg_inference: window=15  inference=356.4 ms  max=426783006  prob=0.905[0m
+[0;32mI (263666) pipeline: Prediction (window 15)[0m
+[0;32mI (264102) sd_logger: SD sync at 263334065 us[0m
+[0;32mI (265096) sd_logger: SD sync at 264334230 us[0m
+[0;32mI (266103) sd_logger: SD sync at 265334405 us[0m
+[0;32mI (267105) sd_logger: SD sync at 266334569 us[0m
+[0;32mI (268096) sd_logger: SD sync at 267334750 us[0m
+[0;32mI (269103) sd_logger: SD sync at 268334906 us[0m
+[0;32mI (270103) sd_logger: SD sync at 269335071 us[0m
+[0;32mI (271103) sd_logger: SD sync at 270335254 us[0m
+[0;32mI (272097) sd_logger: SD sync at 271335435 us[0m
+[0;32mI (273104) sd_logger: SD sync at 272335614 us[0m
+[0;32mI (274104) sd_logger: SD sync at 273335791 us[0m
+[0;32mI (275098) sd_logger: SD sync at 274335982 us[0m
+[0;32mI (276104) sd_logger: SD sync at 275336167 us[0m
+[0;32mI (277104) sd_logger: SD sync at 276336366 us[0m
+[0;32mI (278098) sd_logger: SD sync at 277336538 us[0m
+[0;32mI (279105) sd_logger: SD sync at 278336731 us[0m
+[0;32mI (280052) ecg_inference: window=16  inference=356.5 ms  max=426783006  prob=0.905[0m
+[0;32mI (280053) pipeline: Prediction (window 16)[0m
+[0;32mI (280172) sd_logger: SD sync at 279403707 us[0m
+[0;32mI (281783) sd_logger: SD sync at 281017303 us[0m
+[0;32mI (282806) sd_logger: SD sync at 282039967 us[0m
+[0;32mI (283834) sd_logger: SD sync at 283068907 us[0m
+[0;32mI (284847) sd_logger: SD sync at 284087257 us[0m
+[0;32mI (285881) sd_logger: SD sync at 285114705 us[0m
+[0;32mI (286903) sd_logger: SD sync at 286137087 us[0m
+[0;32mI (287921) sd_logger: SD sync at 287162122 us[0m
+[0;32mI (288956) sd_logger: SD sync at 288185796 us[0m
+[0;32mI (289975) sd_logger: SD sync at 289209295 us[0m
+[0;32mI (291001) sd_logger: SD sync at 290234429 us[0m
+[0;32mI (292016) sd_logger: SD sync at 291256241 us[0m
+[0;32mI (293050) sd_logger: SD sync at 292284406 us[0m
+[0;32mI (294073) sd_logger: SD sync at 293306640 us[0m
+[0;32mI (295092) sd_logger: SD sync at 294332610 us[0m
+[0;32mI (296439) ecg_inference: window=17  inference=356.3 ms  max=426783006  prob=0.953[0m
+[0;32mI (296440) pipeline: Prediction (window 17)[0m
+[0;32mI (296448) sd_logger: SD sync at 295686560 us[0m
+[0;32mI (298169) sd_logger: SD sync at 297401793 us[0m
+[0;32mI (299194) sd_logger: SD sync at 298428188 us[0m
+[0;32mI (300392) sd_logger: SD sync at 299625755 us[0m
+[0;32mI (302103) sd_logger: SD sync at 301341227 us[0m
+[0;32mI (303110) sd_logger: SD sync at 302341434 us[0m
+[0;32mI (304110) sd_logger: SD sync at 303341656 us[0m
+[0;32mI (305110) sd_logger: SD sync at 304341863 us[0m
+[0;32mI (306104) sd_logger: SD sync at 305342067 us[0m
+[0;32mI (307110) sd_logger: SD sync at 306342283 us[0m
+[0;32mI (308113) sd_logger: SD sync at 307342478 us[0m
+[0;32mI (309104) sd_logger: SD sync at 308342668 us[0m
+[0;32mI (310111) sd_logger: SD sync at 309342868 us[0m
+[0;32mI (311111) sd_logger: SD sync at 310343064 us[0m
+[0;32mI (312105) sd_logger: SD sync at 311343253 us[0m
+[0;32mI (312826) ecg_inference: window=18  inference=356.4 ms  max=426783006  prob=0.940[0m
+[0;32mI (312827) pipeline: Prediction (window 18)[0m
+[0;32mI (313111) sd_logger: SD sync at 312343420 us[0m
+[0;32mI (314112) sd_logger: SD sync at 313343633 us[0m
+[0;32mI (315112) sd_logger: SD sync at 314343818 us[0m
+[0;32mI (316106) sd_logger: SD sync at 315344005 us[0m
+[0;32mI (317115) sd_logger: SD sync at 316344228 us[0m
+[0;32mI (318113) sd_logger: SD sync at 317344425 us[0m
+[0;32mI (319106) sd_logger: SD sync at 318344629 us[0m
+[0;32mI (320113) sd_logger: SD sync at 319344827 us[0m
+[0;32mI (320179) ble_stream: >>> Connected (handle=1)[0m
+[0;32mI (321113) sd_logger: SD sync at 320345075 us[0m
+[0;32mI (322107) sd_logger: SD sync at 321345275 us[0m
+[0;32mI (323116) sd_logger: SD sync at 322345492 us[0m
+[0;32mI (324114) sd_logger: SD sync at 323345704 us[0m
+[0;32mI (325108) sd_logger: SD sync at 324345911 us[0m
+[0;32mI (326114) sd_logger: SD sync at 325346113 us[0m
+[0;32mI (327116) sd_logger: SD sync at 326346322 us[0m
+[0;32mI (328115) sd_logger: SD sync at 327346510 us[0m
+[0;32mI (329214) ecg_inference: window=19  inference=356.6 ms  max=39732003  prob=0.990[0m
+[0;32mI (329215) pipeline: Prediction (window 19)[0m
+[0;32mI (329225) sd_logger: SD sync at 328461563 us[0m
+[0;32mI (330944) sd_logger: SD sync at 330178364 us[0m
+[0;32mI (331966) sd_logger: SD sync at 331206249 us[0m
+[0;32mI (332995) sd_logger: SD sync at 332229333 us[0m
+[0;32mI (334019) sd_logger: SD sync at 333253149 us[0m
+[0;32mI (335036) sd_logger: SD sync at 334276432 us[0m
+[0;32mI (336069) sd_logger: SD sync at 335302710 us[0m
+[0;32mI (337089) sd_logger: SD sync at 336323160 us[0m
+[0;32mI (338117) sd_logger: SD sync at 337351286 us[0m
+[0;32mI (339136) sd_logger: SD sync at 338377150 us[0m
+[0;32mI (340163) sd_logger: SD sync at 339394939 us[0m
+[0;32mI (341188) sd_logger: SD sync at 340422246 us[0m
+[0;32mI (342205) sd_logger: SD sync at 341445329 us[0m
+[0;32mI (343418) sd_logger: SD sync at 342473324 us[0m
+[0;32mI (344260) sd_logger: SD sync at 343493793 us[0m
+[0;32mI (345602) ecg_inference: window=20  inference=356.5 ms  max=39732003  prob=0.999[0m
+[0;32mI (345603) pipeline: Prediction (window 20)[0m
+[0;32mI (345611) sd_logger: SD sync at 344849097 us[0m
+[0;32mI (347121) sd_logger: SD sync at 346350669 us[0m
+[0;32mI (348119) sd_logger: SD sync at 347350933 us[0m
+[0;32mI (349113) sd_logger: SD sync at 348351180 us[0m
+[0;32mI (350120) sd_logger: SD sync at 349351413 us[0m
+[0;32mI (351120) sd_logger: SD sync at 350351625 us[0m
+[0;32mI (352120) sd_logger: SD sync at 351351811 us[0m
+[0;32mI (353114) sd_logger: SD sync at 352351951 us[0m
+[0;32mI (354122) sd_logger: SD sync at 353352103 us[0m
+[0;32mI (355120) sd_logger: SD sync at 354352265 us[0m
+[0;32mI (356114) sd_logger: SD sync at 355352432 us[0m
+[0;32mI (357121) sd_logger: SD sync at 356352611 us[0m
+[0;32mI (358123) sd_logger: SD sync at 357352784 us[0m
+[0;32mI (359115) sd_logger: SD sync at 358352980 us[0m
+[0;32mI (360121) sd_logger: SD sync at 359353190 us[0m
+[0;32mI (361122) sd_logger: SD sync at 360353416 us[0m
+[0;32mI (361989) ecg_inference: window=21  inference=356.7 ms  max=39732003  prob=0.998[0m
+[0;32mI (361990) pipeline: Prediction (window 21)[0m
+[0;32mI (362122) sd_logger: SD sync at 361353627 us[0m
+[0;32mI (363116) sd_logger: SD sync at 362353846 us[0m
+[0;32mI (364124) sd_logger: SD sync at 363354058 us[0m
+[0;32mI (365122) sd_logger: SD sync at 364354265 us[0m
+[0;32mI (366116) sd_logger: SD sync at 365354451 us[0m
+[0;32mI (367123) sd_logger: SD sync at 366354660 us[0m
+[0;32mI (368125) sd_logger: SD sync at 367354830 us[0m
+[0;32mI (369117) sd_logger: SD sync at 368354996 us[0m
+[0;32mI (370123) sd_logger: SD sync at 369355139 us[0m
+[0;32mI (371124) sd_logger: SD sync at 370355295 us[0m
+[0;32mI (372117) sd_logger: SD sync at 371355441 us[0m
+[0;32mI (373124) sd_logger: SD sync at 372355628 us[0m
+[0;32mI (374124) sd_logger: SD sync at 373355780 us[0m
+[0;32mI (375124) sd_logger: SD sync at 374355976 us[0m
+[0;32mI (376120) sd_logger: SD sync at 375356175 us[0m
+[0;32mI (377125) sd_logger: SD sync at 376356366 us[0m
+[0;32mI (378376) ecg_inference: window=22  inference=356.7 ms  max=39732003  prob=0.998[0m
+[0;32mI (378377) pipeline: Prediction (window 22)[0m
+[0;32mI (378385) sd_logger: SD sync at 377623558 us[0m
+[0;32mI (380109) sd_logger: SD sync at 379342929 us[0m
+[0;32mI (381131) sd_logger: SD sync at 380365512 us[0m
+[0;32mI (382152) sd_logger: SD sync at 381392242 us[0m
+[0;32mI (383179) sd_logger: SD sync at 382413097 us[0m
+[0;32mI (384206) sd_logger: SD sync at 383440382 us[0m
+[0;32mI (385226) sd_logger: SD sync at 384460263 us[0m
+[0;32mI (386248) sd_logger: SD sync at 385489257 us[0m
+[0;32mI (387661) sd_logger: SD sync at 386892577 us[0m
+[0;32mI (389128) sd_logger: SD sync at 388359328 us[0m
+[0;32mI (390121) sd_logger: SD sync at 389359600 us[0m
+[0;32mI (391128) sd_logger: SD sync at 390359857 us[0m
+[0;32mI (392128) sd_logger: SD sync at 391360111 us[0m
+[0;32mI (393122) sd_logger: SD sync at 392360363 us[0m
+[0;32mI (394128) sd_logger: SD sync at 393360601 us[0m
+[0;32mI (394764) ecg_inference: window=23  inference=356.5 ms  max=39732003  prob=0.999[0m
+[0;32mI (394765) pipeline: Prediction (window 23)[0m
+[0;32mI (395131) sd_logger: SD sync at 394360829 us[0m
+[0;32mI (396129) sd_logger: SD sync at 395361055 us[0m
+[0;32mI (397123) sd_logger: SD sync at 396361266 us[0m
+[0;32mI (398129) sd_logger: SD sync at 397361496 us[0m
+[0;32mI (399130) sd_logger: SD sync at 398361774 us[0m
+[0;32mI (400123) sd_logger: SD sync at 399362025 us[0m
+[0;32mI (401130) sd_logger: SD sync at 400362269 us[0m
+[0;32mI (402131) sd_logger: SD sync at 401362504 us[0m
+[0;32mI (403124) sd_logger: SD sync at 402362769 us[0m
+[0;32mI (404131) sd_logger: SD sync at 403363019 us[0m
+[0;32mI (405131) sd_logger: SD sync at 404363270 us[0m
+[0;32mI (406125) sd_logger: SD sync at 405363529 us[0m
+[0;32mI (407132) sd_logger: SD sync at 406363771 us[0m
+[0;32mI (408132) sd_logger: SD sync at 407364003 us[0m
+[0;32mI (409135) sd_logger: SD sync at 408364246 us[0m
+[0;32mI (410126) sd_logger: SD sync at 409364487 us[0m
+[0;32mI (411152) ecg_inference: window=24  inference=356.6 ms  max=39732003  prob=0.998[0m
+[0;32mI (411153) pipeline: Prediction (window 24)[0m
+[0;32mI (411161) sd_logger: SD sync at 410399579 us[0m
+[0;32mI (412888) sd_logger: SD sync at 412120381 us[0m
+[0;32mI (413916) sd_logger: SD sync at 413148067 us[0m
+[0;32mI (414940) sd_logger: SD sync at 414172342 us[0m
+[0;32mI (415955) sd_logger: SD sync at 415195653 us[0m
+[0;32mI (416989) sd_logger: SD sync at 416219056 us[0m
+[0;32mI (418011) sd_logger: SD sync at 417242965 us[0m
+[0;32mI (419037) sd_logger: SD sync at 418269982 us[0m
+[0;32mI (420052) sd_logger: SD sync at 419292415 us[0m
+[0;32mI (421086) sd_logger: SD sync at 420318142 us[0m
+[0;32mI (422109) sd_logger: SD sync at 421340678 us[0m
+[0;32mI (423125) sd_logger: SD sync at 422365576 us[0m
+[0;32mI (424156) sd_logger: SD sync at 423388491 us[0m
+[0;32mI (425183) sd_logger: SD sync at 424415062 us[0m
+[0;32mI (426197) sd_logger: SD sync at 425437334 us[0m
+[0;32mI (426428) ble_stream: Vitals notify ON[0m
+[0;32mI (427540) ecg_inference: window=25  inference=356.6 ms  max=39732003  prob=0.998[0m
+[0;32mI (427541) pipeline: Prediction (window 25)[0m
+[0;32mI (427549) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (427552) sd_logger: SD sync at 426787364 us[0m
+[0;32mI (427550) NimBLE: att_handle=16[0m
+
+[0;32mI (428122) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (428122) NimBLE: att_handle=16[0m
+
+[0;32mI (429123) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (429130) NimBLE: att_handle=16[0m
+
+[0;32mI (429139) sd_logger: SD sync at 428369024 us[0m
+[0;32mI (430123) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (430129) NimBLE: att_handle=16[0m
+
+[0;32mI (430131) sd_logger: SD sync at 429369315 us[0m
+[0;32mI (431123) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (431128) NimBLE: att_handle=16[0m
+
+[0;32mI (431140) sd_logger: SD sync at 430369573 us[0m
+[0;32mI (432124) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (432129) NimBLE: att_handle=16[0m
+
+[0;32mI (432140) sd_logger: SD sync at 431369853 us[0m
+[0;32mI (433124) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (433129) NimBLE: att_handle=16[0m
+
+[0;32mI (433140) sd_logger: SD sync at 432370128 us[0m
+[0;32mI (434124) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (434131) NimBLE: att_handle=16[0m
+
+[0;32mI (434134) sd_logger: SD sync at 433370415 us[0m
+[0;32mI (435125) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (435130) NimBLE: att_handle=16[0m
+
+[0;32mI (435141) sd_logger: SD sync at 434370691 us[0m
+[0;32mI (436125) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (436129) NimBLE: att_handle=16[0m
+
+[0;32mI (436143) sd_logger: SD sync at 435370933 us[0m
+[0;32mI (437125) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (437131) NimBLE: att_handle=16[0m
+
+[0;32mI (437133) sd_logger: SD sync at 436371197 us[0m
+[0;32mI (438125) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (438133) NimBLE: att_handle=16[0m
+
+[0;32mI (438142) sd_logger: SD sync at 437371445 us[0m
+[0;32mI (439126) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (439130) NimBLE: att_handle=16[0m
+
+[0;32mI (439142) sd_logger: SD sync at 438371717 us[0m
+[0;32mI (440126) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (440131) NimBLE: att_handle=16[0m
+
+[0;32mI (440134) sd_logger: SD sync at 439371998 us[0m
+[0;32mI (441126) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (441131) NimBLE: att_handle=16[0m
+
+[0;32mI (441142) sd_logger: SD sync at 440372263 us[0m
+[0;32mI (442126) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (442131) NimBLE: att_handle=16[0m
+
+[0;32mI (442145) sd_logger: SD sync at 441372531 us[0m
+[0;32mI (443127) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (443131) NimBLE: att_handle=16[0m
+
+[0;32mI (443143) sd_logger: SD sync at 442372821 us[0m
+[0;32mI (443928) ecg_inference: window=26  inference=356.6 ms  max=39732003  prob=0.953[0m
+[0;32mI (443929) pipeline: Prediction (window 26)[0m
+[0;32mI (444127) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (444134) NimBLE: att_handle=16[0m
+
+[0;32mI (444137) sd_logger: SD sync at 443373089 us[0m
+[0;32mI (445127) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (445132) NimBLE: att_handle=16[0m
+
+[0;32mI (445144) sd_logger: SD sync at 444373374 us[0m
+[0;32mI (446127) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (446132) NimBLE: att_handle=16[0m
+
+[0;32mI (446144) sd_logger: SD sync at 445373671 us[0m
+[0;32mI (447128) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (447133) NimBLE: att_handle=16[0m
+
+[0;32mI (447136) sd_logger: SD sync at 446373950 us[0m
+[0;32mI (448128) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (448133) NimBLE: att_handle=16[0m
+
+[0;32mI (448144) sd_logger: SD sync at 447374271 us[0m
+[0;32mI (449128) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (449133) NimBLE: att_handle=16[0m
+
+[0;32mI (449145) sd_logger: SD sync at 448374567 us[0m
+[0;32mI (450129) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (450134) NimBLE: att_handle=16[0m
+
+[0;32mI (450137) sd_logger: SD sync at 449374852 us[0m
+[0;32mI (451129) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (451134) NimBLE: att_handle=16[0m
+
+[0;32mI (451145) sd_logger: SD sync at 450375159 us[0m
+[0;32mI (452129) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (452134) NimBLE: att_handle=16[0m
+
+[0;32mI (452146) sd_logger: SD sync at 451375432 us[0m
+[0;32mI (453130) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (453135) NimBLE: att_handle=16[0m
+
+[0;32mI (453138) sd_logger: SD sync at 452375728 us[0m
+[0;32mI (454130) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (454135) NimBLE: att_handle=16[0m
+
+[0;32mI (454146) sd_logger: SD sync at 453375999 us[0m
+[0;32mI (455130) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (455135) NimBLE: att_handle=16[0m
+
+[0;32mI (455146) sd_logger: SD sync at 454376306 us[0m
+[0;32mI (456130) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (456135) NimBLE: att_handle=16[0m
+
+[0;32mI (456147) sd_logger: SD sync at 455376604 us[0m
+[0;32mI (457131) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (457136) NimBLE: att_handle=16[0m
+
+[0;32mI (457139) sd_logger: SD sync at 456376887 us[0m
+[0;32mI (458131) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (458136) NimBLE: att_handle=16[0m
+
+[0;32mI (458153) sd_logger: SD sync at 457377172 us[0m
+[0;32mI (459131) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (459136) NimBLE: att_handle=16[0m
+
+[0;32mI (459148) sd_logger: SD sync at 458377454 us[0m
+[0;32mI (460317) ecg_inference: window=27  inference=356.6 ms  max=39732003  prob=0.947[0m
+[0;32mI (460318) pipeline: Prediction (window 27)[0m
+[0;32mI (460326) sd_logger: SD sync at 459564641 us[0m
+[0;32mI (460332) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (460333) NimBLE: att_handle=16[0m
+
+[0;32mI (461131) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (461132) NimBLE: att_handle=16[0m
+
+[0;32mI (462056) sd_logger: SD sync at 461288301 us[0m
+[0;32mI (462132) NimBLE: GATT procedure initiated: notify; [0m
+[0;32mI (462132) NimBLE: att_handle=16[0m
+

@@ -23,6 +23,7 @@ idf_component_register(
         "sd_logger.c"
         "serial_stream.c"
         "ecg_inference.cpp"
+        "ble_stream.c"
     INCLUDE_DIRS
         "."
     REQUIRES
@@ -36,6 +37,8 @@ idf_component_register(
         esp_driver_i2c
         esp_driver_uart
         esp_driver_usb_serial_jtag
+        bt
+        nvs_flash
     WHOLE_ARCHIVE
 )
 

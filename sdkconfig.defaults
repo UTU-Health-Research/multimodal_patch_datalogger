@@ -37,3 +37,24 @@ CONFIG_FATFS_MAX_LFN=255
 
 # --- Console output via USB Serial JTAG ---
 CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
+# ============================================================
+# NimBLE configuration
+# ============================================================
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# Only peripheral/broadcaster (we are the GATT server)
+CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
+CONFIG_BT_NIMBLE_ROLE_BROADCASTER=y
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=n
+CONFIG_BT_NIMBLE_ROLE_OBSERVER=n
+
+# MTU 517 to fit 160-byte ECG and 78-byte vitals in one notification
+CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=517
+
+# Single connection
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=1
+
+# Pin NimBLE host task to Core 0 (keep Core 1 free for pipeline)
+CONFIG_BT_NIMBLE_PINNED_TO_CORE=0
