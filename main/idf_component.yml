@@ -1,0 +1,3 @@
+dependencies:
+  espressif/esp-dl:
+    override_path: D:\esp-dl\esp-dl

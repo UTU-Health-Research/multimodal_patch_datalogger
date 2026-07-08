@@ -1,0 +1,76 @@
+Command: ninja flash
+[1/5] C:\Windows\system32\cmd.exe /C "cd /D D:\POC4TRIAGE-usman\DataLogger\v2_board_codes\multimodal_datalogger\build\esp-idf\esptool_py && C:\Espressif\python_env\idf5.5_py3.11_env\Scripts\python.exe C:/Espressif/frameworks/esp-idf-v5.5.4/components/partition_table/check_sizes.py --offset 0x8000 partition --type app D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/partition_table/partition-table.bin D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/multimode_logger_rtos.bin"
+multimode_logger_rtos.bin binary size 0x173380 bytes. Smallest app partition is 0xf00000 bytes. 0xd8cc80 bytes (90%) free.
+[2/5] Performing build step for 'bootloader'
+[1/1] C:\Windows\system32\cmd.exe /C "cd /D D:\POC4TRIAGE-usman\DataLogger\v2_board_codes\multimodal_datalogger\build\bootloader\esp-idf\esptool_py && C:\Espressif\python_env\idf5.5_py3.11_env\Scripts\python.exe C:/Espressif/frameworks/esp-idf-v5.5.4/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader/bootloader.bin"
+Bootloader binary size 0x5700 bytes. 0x2900 bytes (32%) free.
+[3/5] No install step for 'bootloader'
+[4/5] Completed 'bootloader'
+[4/5] C:\Windows\system32\cmd.exe /C "cd /D C:\Espressif\frameworks\esp-idf-v5.5.4\components\esptool_py && C:\Espressif\tools\cmake\3.30.2\bin\cmake.exe -D IDF_PATH=C:/Espressif/frameworks/esp-idf-v5.5.4 -D SERIAL_TOOL=C:/Espressif/python_env/idf5.5_py3.11_env/Scripts/python.exe;;C:/Espressif/frameworks/esp-idf-v5.5.4/components/esptool_py/esptool/esptool.py;--chip;esp32s3 -D SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args -D WORKING_DIRECTORY=D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build -P C:/Espressif/frameworks/esp-idf-v5.5.4/components/esptool_py/run_serial_tool.cmake"
+esptool.py --chip esp32s3 -p COM12 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 16MB 0x0 bootloader/bootloader.bin 0x10000 multimode_logger_rtos.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.12.dev3
+Serial port COM12
+Connecting...
+Chip is ESP32-S3 (QFN56) (revision v0.2)
+Features: WiFi, BLE, Embedded PSRAM 8MB (AP_3v3)
+Crystal is 40MHz
+USB mode: USB-Serial/JTAG
+MAC: 3c:0f:02:ce:e9:e4
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x00005fff...
+Flash will be erased from 0x00010000 to 0x00183fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+SHA digest in image updated
+Compressed 22272 bytes to 14228...
+Writing at 0x00000000... (100 %)
+Wrote 22272 bytes (14228 compressed) at 0x00000000 in 0.2 seconds (effective 821.5 kbit/s)...
+Hash of data verified.
+Compressed 1520512 bytes to 548375...
+Writing at 0x00010000... (2 %)
+Writing at 0x0001dfe8... (5 %)
+Writing at 0x0002b266... (8 %)
+Writing at 0x0003ce34... (11 %)
+Writing at 0x0004a87d... (14 %)
+Writing at 0x0005eda2... (17 %)
+Writing at 0x00072cc8... (20 %)
+Writing at 0x0007d039... (23 %)
+Writing at 0x000901bc... (26 %)
+Writing at 0x00096672... (29 %)
+Writing at 0x0009c7db... (32 %)
+Writing at 0x000a2c72... (35 %)
+Writing at 0x000aa384... (38 %)
+Writing at 0x000b11af... (41 %)
+Writing at 0x000b7e89... (44 %)
+Writing at 0x000c0e15... (47 %)
+Writing at 0x000ca081... (50 %)
+Writing at 0x000d0ee9... (52 %)
+Writing at 0x000d7d27... (55 %)
+Writing at 0x000dde36... (58 %)
+Writing at 0x000e8284... (61 %)
+Writing at 0x000ef2e8... (64 %)
+Writing at 0x000fba44... (67 %)
+Writing at 0x001020c5... (70 %)
+Writing at 0x00124629... (73 %)
+Writing at 0x0012a5ec... (76 %)
+Writing at 0x00130831... (79 %)
+Writing at 0x00136d0d... (82 %)
+Writing at 0x0013c991... (85 %)
+Writing at 0x001456a4... (88 %)
+Writing at 0x0016d45e... (91 %)
+Writing at 0x001731da... (94 %)
+Writing at 0x00179727... (97 %)
+Writing at 0x00180044... (100 %)
+Wrote 1520512 bytes (548375 compressed) at 0x00010000 in 7.0 seconds (effective 1733.6 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 105...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (105 compressed) at 0x00008000 in 0.0 seconds (effective 680.1 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

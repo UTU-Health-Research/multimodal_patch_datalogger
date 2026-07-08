@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/CMakeFiles/bootloader"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/CMakeFiles/bootloader.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/CMakeFiles/bootloader-complete.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule"
+		},
+		{
+			"file" : "D:/POC4TRIAGE-usman/DataLogger/v2_board_codes/multimodal_datalogger/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"bootloader"
+		],
+		"name" : "bootloader"
+	}
+}
